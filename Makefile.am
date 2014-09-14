@@ -92,7 +92,7 @@ tests_check_requests_LDADD = \
 
 tests_check_gist_SOURCES = \
 	tests/check_gist.c \
-	tests/mock_requests.c \
+	tests/mock_gist.c \
 	tests/utils.c
 
 tests_check_gist_CFLAGS = \

@@ -20,6 +20,7 @@
 gchar *gist_json = NULL;
 gchar *gist_content = NULL;
 gboolean send_json = TRUE;
+gint64 unix_utc = -1;
 
 
 void
@@ -73,6 +74,45 @@ test_fetch_gist_invalid_content(void)
 }
 
 
+void
+test_gist_ctx_needs_reload_true(void)
+{
+    unix_utc = 1234568250;
+    rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
+    ctx->content = NULL;
+    ctx->commit = NULL;
+    ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
+    g_assert(rant_gist_ctx_needs_reload(ctx));
+    rant_gist_ctx_free(ctx);
+}
+
+
+void
+test_gist_ctx_needs_reload_false(void)
+{
+    unix_utc = 1234567899;
+    rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
+    ctx->content = NULL;
+    ctx->commit = NULL;
+    ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
+    g_assert(!rant_gist_ctx_needs_reload(ctx));
+    rant_gist_ctx_free(ctx);
+}
+
+
+void
+test_gist_ctx_needs_reload_equals(void)
+{
+    unix_utc = 1234567890;
+    rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
+    ctx->content = NULL;
+    ctx->commit = NULL;
+    ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
+    g_assert(!rant_gist_ctx_needs_reload(ctx));
+    rant_gist_ctx_free(ctx);
+}
+
+
 int
 main(int argc, char** argv)
 {
@@ -82,5 +122,11 @@ main(int argc, char** argv)
     g_test_add_func("/gist/fetch_gist_invalid", test_fetch_gist_invalid);
     g_test_add_func("/gist/fetch_gist_invalid_content",
         test_fetch_gist_invalid_content);
+    g_test_add_func("/gist/ctx_needs_reload_true",
+        test_gist_ctx_needs_reload_true);
+    g_test_add_func("/gist/ctx_needs_reload_false",
+        test_gist_ctx_needs_reload_false);
+    g_test_add_func("/gist/ctx_needs_reload_equals",
+        test_gist_ctx_needs_reload_equals);
     return g_test_run();
 }
