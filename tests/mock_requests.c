@@ -12,18 +12,22 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <glib.h>
-#include <curl/curl.h>
 
 // this thing isn't thread safe, bla, bla, bla, but this is just a test :)
-extern CURLcode return_value;
+extern gchar *gist_json;
+extern gchar *gist_content;
+extern gboolean send_json;
 
 
-// this is a poor man's mock of curl_easy_perform :)
-CURLcode
-curl_easy_perform(CURL *easy_handle)
+// this is a poor man's mock of rant_fetch_url :)
+GString*
+rant_fetch_url(const gchar *url)
 {
-    g_assert(easy_handle != NULL);
-    return return_value;
+    gchar *str = send_json ? gist_json : gist_content;
+    send_json = !send_json;
+    if (str == NULL)
+        return NULL;
+    return g_string_new(str);
 }
 
-#include "../src/requests.c"
+#include "../src/gist.c"

@@ -43,7 +43,9 @@ Makefile.in
 /rant
 
 # tests
+/tests/utils.c
 /tests/check_requests
+/tests/check_gist
 /tests/*.log
 /tests/*.trs
 /tests/valgrind-*.xml

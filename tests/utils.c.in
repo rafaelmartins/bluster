@@ -12,18 +12,18 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <glib.h>
-#include <curl/curl.h>
 
-// this thing isn't thread safe, bla, bla, bla, but this is just a test :)
-extern CURLcode return_value;
+#include "utils.h"
 
 
-// this is a poor man's mock of curl_easy_perform :)
-CURLcode
-curl_easy_perform(CURL *easy_handle)
+gchar*
+load_fixture(const gchar *fixture)
 {
-    g_assert(easy_handle != NULL);
-    return return_value;
+    gchar *contents;
+    gchar *f = g_build_filename("@abs_top_srcdir@", "tests", "fixtures", fixture, NULL);
+    gboolean success = g_file_get_contents(f, &contents, NULL, NULL);
+    g_free(f);
+    if (!success)
+        return NULL;
+    return contents;
 }
-
-#include "../src/requests.c"
