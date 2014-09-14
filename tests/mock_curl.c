@@ -12,19 +12,19 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <glib.h>
+#include <curl/curl.h>
+#include "../src/requests.h"
+
+// this thing isn't thread safe, bla, bla, bla, but this is just a test :)
+extern CURLcode return_value;
 
 
-void
-test_foo(void)
+// this is a poor man's mock of curl_easy_perform :)
+CURLcode
+curl_easy_perform(CURL *easy_handle)
 {
-    g_assert(TRUE);
+    g_assert(easy_handle != NULL);
+    return return_value;
 }
 
-
-int
-main(int argc, char** argv)
-{
-    g_test_init(&argc, &argv, NULL);
-    g_test_add_func("/foo/foo", test_foo);
-    return g_test_run();
-}
+#include "../src/requests.c"

@@ -20,7 +20,7 @@ bin_PROGRAMS = \
 	rant
 
 check_PROGRAMS = \
-	tests/check_foo
+	tests/check_requests
 
 TESTS = \
 	$(check_PROGRAMS)
@@ -29,7 +29,7 @@ TESTS = \
 ## Build rules: convenience library
 
 librant_la_SOURCES = \
-	src/lib.c
+	src/requests.c
 
 librant_la_CFLAGS = \
 	$(BALDE_CFLAGS) \
@@ -57,24 +57,26 @@ rant_CFLAGS = \
 rant_LDADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_CFLAGS)
+	$(JSON_GLIB_CFLAGS) \
+	librant.la
 
 
 ## Build rules: tests
 
-tests_check_foo_SOURCES = \
-	tests/check_foo.c
+tests_check_requests_SOURCES = \
+	tests/check_requests.c \
+	tests/mock_curl.c
 
-tests_check_foo_CFLAGS = \
+tests_check_requests_CFLAGS = \
 	$(BALDE_CFLAGS) \
 	$(LIBCURL_CFLAGS) \
 	$(JSON_GLIB_CFLAGS) \
 	-I$(top_srcdir)/src
 
-tests_check_foo_LDFLAGS = \
+tests_check_requests_LDFLAGS = \
 	-no-install
 
-tests_check_foo_LDADD = \
+tests_check_requests_LDADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_CFLAGS)

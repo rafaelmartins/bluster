@@ -43,7 +43,7 @@ Makefile.in
 /rant
 
 # tests
-/tests/check_foo
+/tests/check_requests
 /tests/*.log
 /tests/*.trs
 /tests/valgrind-*.xml

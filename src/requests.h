@@ -7,13 +7,10 @@
  * See the file COPYING.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
+#ifndef _RANT_REQUESTS_H
+#define _RANT_REQUESTS_H
 
+size_t rant_curl_write_callback(void *contents, size_t size, size_t nmemb, void *userp);
+GString* rant_fetch_url(const gchar *url);
 
-void
-nop(void)
-{
-    return;
-}
+#endif
