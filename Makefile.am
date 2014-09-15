@@ -7,6 +7,9 @@ EXTRA_DIST = \
 	.version \
 	build-aux/git-version-gen \
 	README.md \
+	src/templates/base.html \
+	src/static/resources.xml \
+	src/static/screen.css \
 	tests/fixtures/gist.json \
 	tests/fixtures/gist-truncated.json
 
@@ -22,6 +25,7 @@ noinst_HEADERS = \
 	src/requests.h \
 	src/gist.h \
 	src/helpers.h \
+	src/free.h \
 	tests/utils.h
 
 bin_PROGRAMS = \
@@ -41,7 +45,8 @@ TESTS = \
 librant_la_SOURCES = \
 	src/requests.c \
 	src/gist.c \
-	src/helpers.c
+	src/helpers.c \
+	src/free.c
 
 librant_la_CFLAGS = \
 	$(BALDE_CFLAGS) \
@@ -54,22 +59,43 @@ librant_la_LIBADD = \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_CFLAGS)
 
+src/templates/%.c: src/templates/%.html
+	$(AM_V_GEN)$(BALDE_TEMPLATE_GEN) $< $@
+
+src/templates/%.h: src/templates/%.html
+	$(AM_V_GEN)$(BALDE_TEMPLATE_GEN) $< $@
+
+src/static/resources.c: src/static/resources.xml $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir $(top_srcdir)/src/static $(top_srcdir)/src/static/resources.xml)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --generate --sourcedir $(top_srcdir)/src/static --target $@ $<
+
+src/static/resources.h: src/static/resources.xml $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir $(top_srcdir)/src/static $(top_srcdir)/src/static/resources.xml)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --generate --sourcedir $(top_srcdir)/src/static --target $@ $<
+
 
 ## Build rules: binary
 
 rant_SOURCES = \
 	src/main.c
 
+nodist_rant_SOURCES = \
+	src/templates/base.c \
+	src/templates/base.h \
+	src/static/resources.c \
+	src/static/resources.h
+
+rant-main.$(OBJEXT): $(nodist_rant_SOURCES)
+
 rant_CFLAGS = \
 	$(BALDE_CFLAGS) \
 	$(LIBCURL_CFLAGS) \
 	$(JSON_GLIB_CFLAGS) \
+	-I$(top_builddir)/src \
 	-I$(top_srcdir)/src
 
 rant_LDADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_CFLAGS) \
+	$(JSON_GLIB_LIBS) \
 	librant.la
 
 
@@ -133,6 +159,12 @@ tests_check_helpers_LDADD = \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_LIBS) \
 	librant.la
+
+
+## Helpers: Local clean
+
+clean-local:
+	rm -f src/{templates,static}/*.{c,h}
 
 
 ## Helpers: Valgrind runners

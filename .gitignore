@@ -42,6 +42,12 @@ Makefile.in
 
 /rant
 
+# built sources
+/src/static/*.c
+/src/static/*.h
+/src/templates/*.c
+/src/templates/*.h
+
 # tests
 /tests/utils.c
 /tests/check_requests

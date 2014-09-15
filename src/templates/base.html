@@ -1,0 +1,8 @@
+{% include "balde-markdown.h" %}
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', FALSE, 'screen.css') }}" />
+</head>
+<body>
+    {{ markdown(content) }}
+</body>

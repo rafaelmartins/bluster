@@ -7,12 +7,11 @@
  * See the file COPYING.
  */
 
-#ifndef _RANT_HELPERS_H
-#define _RANT_HELPERS_H
+#ifndef _RANT_FREE_H
+#define _RANT_FREE_H
 
-#include <balde.h>
 #include "gist.h"
 
-rant_gist_ctx_t* rant_get_gist_ctx(balde_app_t *app, const gchar *gist_id);
+void rant_gist_ctx_free(rant_gist_ctx_t *ctx);
 
 #endif

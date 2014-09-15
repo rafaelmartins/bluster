@@ -16,6 +16,7 @@
 
 #include "gist.h"
 #include "helpers.h"
+#include "free.h"
 
 
 rant_gist_ctx_t*
@@ -28,17 +29,4 @@ rant_get_gist_ctx(balde_app_t *app, const gchar *gist_id)
         app->user_data = new_ctx;
     }
     return (rant_gist_ctx_t*) app->user_data;
-}
-
-
-void
-rant_gist_ctx_free(rant_gist_ctx_t *ctx)
-{
-    if (ctx == NULL)
-        return;
-    g_free(ctx->content);
-    g_free(ctx->commit);
-    if (ctx->datetime != NULL)
-        g_date_time_unref(ctx->datetime);
-    g_free(ctx);
 }

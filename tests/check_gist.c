@@ -16,6 +16,7 @@
 
 #include "../src/gist.h"
 #include "../src/helpers.h"
+#include "../src/free.h"
 #include "utils.h"
 
 gchar *gist_json = NULL;

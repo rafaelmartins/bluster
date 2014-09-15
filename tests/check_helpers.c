@@ -14,6 +14,7 @@
 #include <glib.h>
 
 #include "../src/helpers.h"
+#include "../src/free.h"
 
 gchar *content = NULL;
 gchar *commit = NULL;
