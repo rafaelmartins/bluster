@@ -46,6 +46,7 @@ Makefile.in
 /tests/utils.c
 /tests/check_requests
 /tests/check_gist
+/tests/check_helpers
 /tests/*.log
 /tests/*.trs
 /tests/valgrind-*.xml

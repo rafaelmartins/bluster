@@ -96,18 +96,6 @@ point1:
 }
 
 
-void
-rant_gist_ctx_free(rant_gist_ctx_t *ctx)
-{
-    if (ctx == NULL)
-        return;
-    g_free(ctx->content);
-    g_free(ctx->commit);
-    g_date_time_unref(ctx->datetime);
-    g_free(ctx);
-}
-
-
 gboolean
 rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx)
 {

@@ -15,6 +15,7 @@
 #include <curl/curl.h>
 
 #include "../src/gist.h"
+#include "../src/helpers.h"
 #include "utils.h"
 
 gchar *gist_json = NULL;

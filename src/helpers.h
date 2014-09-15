@@ -7,18 +7,13 @@
  * See the file COPYING.
  */
 
-#ifndef _RANT_GIST_H
-#define _RANT_GIST_H
+#ifndef _RANT_HELPERS_H
+#define _RANT_HELPERS_H
 
-#include <glib.h>
+#include <balde.h>
+#include "gist.h"
 
-typedef struct {
-    gchar *content;
-    gchar *commit;
-    GDateTime *datetime;
-} rant_gist_ctx_t;
-
-rant_gist_ctx_t* rant_fetch_gist(const gchar *gist_id);
-gboolean rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx);
+rant_gist_ctx_t* rant_get_gist_ctx(balde_app_t *app, const gchar *gist_id);
+void rant_gist_ctx_free(rant_gist_ctx_t *ctx);
 
 #endif

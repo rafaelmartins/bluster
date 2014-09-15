@@ -21,6 +21,7 @@ noinst_LTLIBRARIES = \
 noinst_HEADERS = \
 	src/requests.h \
 	src/gist.h \
+	src/helpers.h \
 	tests/utils.h
 
 bin_PROGRAMS = \
@@ -28,7 +29,8 @@ bin_PROGRAMS = \
 
 check_PROGRAMS = \
 	tests/check_requests \
-	tests/check_gist
+	tests/check_gist \
+	tests/check_helpers
 
 TESTS = \
 	$(check_PROGRAMS)
@@ -38,7 +40,8 @@ TESTS = \
 
 librant_la_SOURCES = \
 	src/requests.c \
-	src/gist.c
+	src/gist.c \
+	src/helpers.c
 
 librant_la_CFLAGS = \
 	$(BALDE_CFLAGS) \
@@ -88,7 +91,8 @@ tests_check_requests_LDFLAGS = \
 tests_check_requests_LDADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_LIBS)
+	$(JSON_GLIB_LIBS) \
+	librant.la
 
 tests_check_gist_SOURCES = \
 	tests/check_gist.c \
@@ -108,7 +112,27 @@ tests_check_gist_LDFLAGS = \
 tests_check_gist_LDADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_LIBS)
+	$(JSON_GLIB_LIBS) \
+	librant.la
+
+tests_check_helpers_SOURCES = \
+	tests/check_helpers.c \
+	tests/mock_helpers.c
+
+tests_check_helpers_CFLAGS = \
+	$(BALDE_CFLAGS) \
+	$(LIBCURL_CFLAGS) \
+	$(JSON_GLIB_CFLAGS) \
+	-I$(top_srcdir)/src
+
+tests_check_helpers_LDFLAGS = \
+	-no-install
+
+tests_check_helpers_LDADD = \
+	$(BALDE_LIBS) \
+	$(LIBCURL_LIBS) \
+	$(JSON_GLIB_LIBS) \
+	librant.la
 
 
 ## Helpers: Valgrind runners
