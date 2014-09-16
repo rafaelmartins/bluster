@@ -1,6 +1,7 @@
 AC_PREREQ([2.69])
 
 AC_INIT([rant], [m4_esyscmd(build-aux/git-version-gen .tarball-version)],
+  [https://github.com/rafaelmartins/rant/issues], [rant],
   [https://github.com/rafaelmartins/rant])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])

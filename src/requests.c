@@ -39,7 +39,8 @@ rant_fetch_url(const gchar *url)
 
     curl_easy_setopt(hnd, CURLOPT_URL, url);
     curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
-    curl_easy_setopt(hnd, CURLOPT_USERAGENT, "balde-gist/0");
+    curl_easy_setopt(hnd, CURLOPT_USERAGENT,
+        PACKAGE_NAME "/" PACKAGE_VERSION " (See " PACKAGE_URL " for info)");
     curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
     curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
