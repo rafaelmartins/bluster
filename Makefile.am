@@ -103,7 +103,7 @@ rant_LDADD = \
 
 tests_check_requests_SOURCES = \
 	tests/check_requests.c \
-	tests/mock_curl.c
+	tests/mock_requests.c
 
 tests_check_requests_CFLAGS = \
 	$(BALDE_CFLAGS) \
