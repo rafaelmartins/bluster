@@ -31,7 +31,6 @@ test_get_gist_ctx_reload(void)
     needs_reload = TRUE;
 
     balde_app_t *app = balde_app_init();
-    app->user_data = NULL;
 
     rant_gist_ctx_t *ctx = rant_get_gist_ctx(app, "123456");
     g_assert(ctx != NULL);

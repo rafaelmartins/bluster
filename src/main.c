@@ -36,7 +36,6 @@ int
 main(int argc, char **argv)
 {
     balde_app_t *app = balde_app_init();
-    app->user_data = NULL;
     balde_resources_load(app, resources_get_resource());
     balde_app_add_url_rule(app, "main", "/", BALDE_HTTP_GET, main_view);
     balde_app_run(app, argc, argv);
