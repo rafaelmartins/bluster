@@ -30,3 +30,19 @@ rant_get_gist_ctx(balde_app_t *app, const gchar *gist_id)
     }
     return (rant_gist_ctx_t*) app->user_data;
 }
+
+
+gchar*
+rant_get_title(const gchar *content)
+{
+    for (guint i = 0; content[i] != '\0'; i++)
+        if (content[i] == '\n' || content[i] == '\r')
+            return g_strndup(content, i);
+}
+
+
+gchar*
+balde_tmpl_title(balde_app_t *app, balde_request_t *request, const gchar *content)
+{
+    return rant_get_title(content);
+}

@@ -1,8 +1,20 @@
-{% include "balde-markdown.h" %}
+{% include "balde-markdown.h" %}{% include "helpers.h" %}<!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', FALSE, 'screen.css') }}" />
-</head>
-<body>
-    {{ markdown(content) }}
-</body>
+    <title>{{ title(content) }}</title>
+  </head>
+  <body>
+
+<!-- begin markdown parsed content -->
+
+{{ markdown(content) }}
+
+<!-- end markdown parsed content -->
+
+    <footer>
+      <p>Proudly published with <a href="{{ rant_url }}">rant</a></p>
+    </footer>
+  </body>
+</html>

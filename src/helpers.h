@@ -14,5 +14,7 @@
 #include "gist.h"
 
 rant_gist_ctx_t* rant_get_gist_ctx(balde_app_t *app, const gchar *gist_id);
+gchar* rant_get_title(const gchar *content);
+gchar* balde_tmpl_title(balde_app_t *app, balde_request_t *request, const gchar *content);
 
 #endif
