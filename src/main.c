@@ -22,7 +22,8 @@
 balde_response_t*
 main_view(balde_app_t *app, balde_request_t *request)
 {
-    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app, "8803dc6042d662b603e4");
+    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app,
+        balde_app_get_config(app, "gist_id"));
     if (ctx == NULL)
         return balde_abort(app, 404);
     balde_response_t* response = balde_make_response("");
@@ -38,6 +39,7 @@ main(int argc, char **argv)
     balde_app_t *app = balde_app_init();
     balde_resources_load(app, resources_get_resource());
     balde_app_add_url_rule(app, "main", "/", BALDE_HTTP_GET, main_view);
+    balde_app_set_config_from_envvar(app, "gist_id", "RANT_GIST_ID", FALSE);
     balde_app_run(app, argc, argv);
     balde_app_free(app);
     return 0;
