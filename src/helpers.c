@@ -38,6 +38,7 @@ rant_get_title(const gchar *content)
     for (guint i = 0; content[i] != '\0'; i++)
         if (content[i] == '\n' || content[i] == '\r')
             return g_strndup(content, i);
+    return g_strdup(content);
 }
 
 

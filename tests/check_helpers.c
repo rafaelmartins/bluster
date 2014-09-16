@@ -102,6 +102,21 @@ test_get_gist_ctx_no_reload(void)
 }
 
 
+void
+test_get_title(void)
+{
+    gchar *title = rant_get_title("asdqwe\nzxcvbn");
+    g_assert_cmpstr(title, ==, "asdqwe");
+    g_free(title);
+    title = rant_get_title("poilkj\rzxc");
+    g_assert_cmpstr(title, ==, "poilkj");
+    g_free(title);
+    title = rant_get_title("poilkjzxc");
+    g_assert_cmpstr(title, ==, "poilkjzxc");
+    g_free(title);
+}
+
+
 int
 main(int argc, char** argv)
 {
@@ -111,5 +126,6 @@ main(int argc, char** argv)
         test_get_gist_ctx_reload_with_old_ctx);
     g_test_add_func("/helpers/get_gist_ctx_no_reload",
         test_get_gist_ctx_no_reload);
+    g_test_add_func("/helpers/get_title", test_get_title);
     return g_test_run();
 }
