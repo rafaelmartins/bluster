@@ -83,7 +83,7 @@ nodist_rant_SOURCES = \
 	src/static/resources.c \
 	src/static/resources.h
 
-rant-main.$(OBJEXT): $(nodist_rant_SOURCES)
+src/rant-main.$(OBJEXT): $(nodist_rant_SOURCES)
 
 rant_CFLAGS = \
 	$(BALDE_CFLAGS) \
