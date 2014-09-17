@@ -35,10 +35,32 @@ rant_get_gist_ctx(balde_app_t *app, const gchar *gist_id)
 gchar*
 rant_get_title(const gchar *content)
 {
-    for (guint i = 0; content[i] != '\0'; i++)
-        if (content[i] == '\n' || content[i] == '\r')
-            return g_strndup(content, i);
-    return g_strdup(content);
+    gchar *content_ = g_strdup(content);
+    gchar *tmp = content_;
+    guint offset = 0;
+    gboolean start = TRUE;
+    gchar *rv;
+    for (guint i = 0; content[i] != '\0'; i++) {
+        switch (content[i]) {
+            case ' ':
+            case '#':
+                if (start) {
+                    tmp++;
+                    offset++;
+                }
+                break;
+            case '\n':
+            case '\r':
+                rv = g_strndup(tmp, i - offset);
+                g_free(content_);
+                return rv;
+            default:
+                start = FALSE;
+        }
+    }
+    rv = g_strdup(tmp);
+    g_free(content_);
+    return rv;
 }
 
 
