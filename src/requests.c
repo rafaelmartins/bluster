@@ -27,11 +27,19 @@ rant_curl_write_callback(void *contents, size_t size, size_t nmemb, void *userp)
 
 
 GString*
-rant_fetch_url(const gchar *url)
+rant_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
 {
     struct curl_slist *headers = NULL;
-    headers = curl_slist_append(headers,
-        "Accept: application/vnd.github.v3+json");
+
+    if (oauth_token != NULL) {
+        gchar *oauth_token_header = g_strdup_printf("Authorization: token %s",
+            oauth_token);
+        headers = curl_slist_append(headers, oauth_token_header);
+        g_free(oauth_token_header);
+    }
+
+    if (wants_json)
+        headers = curl_slist_append(headers, "Accept: application/vnd.github.v3+json");
 
     CURL *hnd = curl_easy_init();
 

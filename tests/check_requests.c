@@ -22,7 +22,7 @@ CURLcode return_value = CURLE_OK;
 void
 test_fetch_url(void)
 {
-    GString *str = rant_fetch_url("http://google.com");
+    GString *str = rant_fetch_url("http://google.com", NULL, TRUE);
     g_assert(str != NULL);
     g_assert_cmpstr(str->str, ==, "");
     g_string_free(str, TRUE);
@@ -33,7 +33,7 @@ void
 test_fetch_url_nok(void)
 {
     return_value = CURLE_HTTP_NOT_FOUND;
-    g_assert(rant_fetch_url("http://google.com") == NULL);
+    g_assert(rant_fetch_url("http://google.com", NULL, TRUE) == NULL);
 }
 
 

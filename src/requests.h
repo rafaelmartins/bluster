@@ -11,6 +11,6 @@
 #define _RANT_REQUESTS_H
 
 size_t rant_curl_write_callback(void *contents, size_t size, size_t nmemb, void *userp);
-GString* rant_fetch_url(const gchar *url);
+GString* rant_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json);
 
 #endif

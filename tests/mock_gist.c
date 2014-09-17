@@ -16,15 +16,21 @@
 // this thing isn't thread safe, bla, bla, bla, but this is just a test :)
 extern gchar *gist_json;
 extern gchar *gist_content;
-extern gboolean send_json;
 extern gint64 unix_utc;
+extern guint url_count;
+extern gchar *expected_urls[2];
+extern gchar *expected_token;
 
 // this is a poor man's mock of rant_fetch_url :)
 GString*
-rant_fetch_url(const gchar *url)
+rant_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
 {
-    gchar *str = send_json ? gist_json : gist_content;
-    send_json = !send_json;
+    g_assert_cmpstr(url, ==, expected_urls[url_count++]);
+    if (expected_token == NULL)
+        g_assert(oauth_token == NULL);
+    else
+        g_assert_cmpstr(oauth_token, ==, expected_token);
+    gchar *str = wants_json ? gist_json : gist_content;
     if (str == NULL)
         return NULL;
     return g_string_new(str);

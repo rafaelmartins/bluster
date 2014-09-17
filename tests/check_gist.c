@@ -21,16 +21,21 @@
 
 gchar *gist_json = NULL;
 gchar *gist_content = NULL;
-gboolean send_json = TRUE;
 gint64 unix_utc = -1;
+guint url_count = 0;
+gchar *expected_urls[2] = {NULL, NULL};
+gchar *expected_token = NULL;
 
 
 void
 test_fetch_gist(void)
 {
-    send_json = TRUE;
     gist_json = load_fixture("gist.json");
-    rant_gist_ctx_t *ctx = rant_fetch_gist("123456");
+    expected_urls[0] = "https://api.github.com/gists/123456";
+    expected_urls[1] = NULL;
+    url_count = 0;
+    expected_token = NULL;
+    rant_gist_ctx_t *ctx = rant_fetch_gist("123456", NULL);
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "contents of gist");
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d462f");
@@ -43,10 +48,14 @@ test_fetch_gist(void)
 void
 test_fetch_gist_truncated(void)
 {
-    send_json = TRUE;
     gist_json = load_fixture("gist-truncated.json");
     gist_content = "bola";
-    rant_gist_ctx_t *ctx = rant_fetch_gist("123456");
+    expected_urls[0] = "https://api.github.com/gists/123456";
+    expected_urls[1] = "https://gist.githubusercontent.com/raw/365370/"
+        "8c4d2d43d178df44f4c03a7f2ac0ff512853564e/ring.erl";
+    url_count = 0;
+    expected_token = "asdfgdfhfgj";
+    rant_gist_ctx_t *ctx = rant_fetch_gist("123456", "asdfgdfhfgj");
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "bola");
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d461e");
@@ -59,20 +68,27 @@ test_fetch_gist_truncated(void)
 void
 test_fetch_gist_invalid(void)
 {
-    send_json = TRUE;
     gist_json = NULL;
     gist_content = NULL;
-    g_assert(rant_fetch_gist("123456") == NULL);
+    expected_urls[0] = "https://api.github.com/gists/123456";
+    expected_urls[1] = NULL;
+    url_count = 0;
+    expected_token = NULL;
+    g_assert(rant_fetch_gist("123456", NULL) == NULL);
 }
 
 
 void
 test_fetch_gist_invalid_content(void)
 {
-    send_json = TRUE;
     gist_json = load_fixture("gist-truncated.json");
     gist_content = NULL;
-    g_assert(rant_fetch_gist("123456") == NULL);
+    expected_urls[0] = "https://api.github.com/gists/123456";
+    expected_urls[1] = "https://gist.githubusercontent.com/raw/365370/"
+        "8c4d2d43d178df44f4c03a7f2ac0ff512853564e/ring.erl";
+    url_count = 0;
+    expected_token = "asdfgdfhfgj";
+    g_assert(rant_fetch_gist("123456", "asdfgdfhfgj") == NULL);
 }
 
 

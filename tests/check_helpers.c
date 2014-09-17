@@ -19,6 +19,7 @@
 gchar *content = NULL;
 gchar *commit = NULL;
 gint64 unix_utc = -1;
+gchar *expected_token = NULL;
 gboolean needs_reload = TRUE;
 
 
@@ -32,7 +33,7 @@ test_get_gist_ctx_reload(void)
 
     balde_app_t *app = balde_app_init();
 
-    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app, "123456");
+    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app);
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "bola");
     g_assert_cmpstr(ctx->commit, ==, "guda");
@@ -60,7 +61,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     balde_app_t *app = balde_app_init();
     app->user_data = old_ctx;
 
-    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app, "123456");
+    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app);
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "bola");
     g_assert_cmpstr(ctx->commit, ==, "guda");
@@ -89,7 +90,7 @@ test_get_gist_ctx_no_reload(void)
     balde_app_t *app = balde_app_init();
     app->user_data = old_ctx;
 
-    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app, "123456");
+    rant_gist_ctx_t *ctx = rant_get_gist_ctx(app);
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "chunda");
     g_assert_cmpstr(ctx->commit, ==, "arcoiro");

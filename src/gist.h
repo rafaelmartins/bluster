@@ -18,7 +18,7 @@ typedef struct {
     GDateTime *datetime;
 } rant_gist_ctx_t;
 
-rant_gist_ctx_t* rant_fetch_gist(const gchar *gist_id);
+rant_gist_ctx_t* rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token);
 gboolean rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx);
 
 #endif

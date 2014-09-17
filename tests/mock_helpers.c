@@ -19,13 +19,18 @@
 extern gchar *content;
 extern gchar *commit;
 extern gint64 unix_utc;
+extern gchar *expected_token;
 extern gboolean needs_reload;
 
 
 // this is a poor man's mock of rant_fetch_gist :)
 rant_gist_ctx_t*
-rant_fetch_gist(const gchar *gist_id)
+rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
 {
+    if (expected_token == NULL)
+        g_assert(oauth_token == NULL);
+    else
+        g_assert_cmpstr(oauth_token, ==, expected_token);
     rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
     ctx->content = g_strdup(content);
     ctx->commit = g_strdup(commit);

@@ -19,13 +19,13 @@
 
 
 rant_gist_ctx_t*
-rant_fetch_gist(const gchar *gist_id)
+rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
 {
     if (gist_id == NULL)
         return NULL;
 
     gchar *url = g_strdup_printf("https://api.github.com/gists/%s", gist_id);
-    GString *response = rant_fetch_url(url);
+    GString *response = rant_fetch_url(url, oauth_token, TRUE);
     g_free(url);
 
     if (response == NULL)
@@ -57,7 +57,8 @@ rant_fetch_gist(const gchar *gist_id)
     if (truncated) {  // fetch from raw_url
         if (!json_reader_read_member(reader, "raw_url"))
             goto point2;
-        GString *raw = rant_fetch_url(json_reader_get_string_value(reader));
+        GString *raw = rant_fetch_url(json_reader_get_string_value(reader),
+            oauth_token, FALSE);
         if (raw == NULL)
             goto point2;
         content = g_string_free(raw, FALSE);
