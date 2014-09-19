@@ -21,6 +21,7 @@ extern gchar *commit;
 extern gint64 unix_utc;
 extern gchar *expected_token;
 extern gboolean needs_reload;
+extern gdouble expected_ttl;
 
 
 // this is a poor man's mock of rant_fetch_gist :)
@@ -44,8 +45,9 @@ rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
 
 // this is a poor man's mock of rant_gist_ctx_needs_reload :)
 gboolean
-rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx)
+rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx, gdouble ttl)
 {
+    g_assert_cmpfloat(ttl, ==, expected_ttl);
     return needs_reload;
 }
 

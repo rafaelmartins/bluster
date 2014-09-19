@@ -21,6 +21,7 @@ gchar *commit = NULL;
 gint64 unix_utc = -1;
 gchar *expected_token = NULL;
 gboolean needs_reload = TRUE;
+gdouble expected_ttl = 5.0;
 
 
 void
@@ -30,6 +31,7 @@ test_get_gist_ctx_reload(void)
     commit = "guda";
     unix_utc = -1;
     needs_reload = TRUE;
+    expected_ttl = 5.0;
 
     balde_app_t *app = balde_app_init();
 
@@ -52,6 +54,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     commit = "guda";
     unix_utc = -1;
     needs_reload = TRUE;
+    expected_ttl = 10.0;
 
     rant_gist_ctx_t *old_ctx = g_new(rant_gist_ctx_t, 1);
     old_ctx->content = g_strdup("chunda");
@@ -59,6 +62,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     old_ctx->datetime = NULL;
 
     balde_app_t *app = balde_app_init();
+    balde_app_set_config(app, "gist_ttl", "10");
     app->user_data = old_ctx;
 
     rant_gist_ctx_t *ctx = rant_get_gist_ctx(app);
@@ -81,6 +85,7 @@ test_get_gist_ctx_no_reload(void)
     commit = "guda";
     unix_utc = -1;
     needs_reload = FALSE;
+    expected_ttl = 5.0;
 
     rant_gist_ctx_t *old_ctx = g_new(rant_gist_ctx_t, 1);
     old_ctx->content = g_strdup("chunda");

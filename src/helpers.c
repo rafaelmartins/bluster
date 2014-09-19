@@ -23,9 +23,17 @@ rant_gist_ctx_t*
 rant_get_gist_ctx(balde_app_t *app)
 {
     const gchar *gist_id = balde_app_get_config(app, "gist_id");
+    const gchar *gist_ttl = balde_app_get_config(app, "gist_ttl");
     const gchar *oauth_token = balde_app_get_config(app, "oauth_token");
+    gdouble ttl = 5;
+    if (gist_ttl != NULL) {
+        ttl = g_ascii_strtod(gist_ttl, NULL);
+        if (ttl == 0)
+            balde_abort_set_error_with_description(app, 500,
+                "Invalid value of gist TTL");
+    }
     rant_gist_ctx_t *ctx = (rant_gist_ctx_t*) app->user_data;
-    if (rant_gist_ctx_needs_reload(ctx)) {
+    if (rant_gist_ctx_needs_reload(ctx, ttl)) {
         rant_gist_ctx_t *new_ctx = rant_fetch_gist(gist_id, oauth_token);
         rant_gist_ctx_free(ctx);
         app->user_data = new_ctx;

@@ -98,12 +98,12 @@ point1:
 
 
 gboolean
-rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx)
+rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx, gdouble ttl)
 {
     if (ctx == NULL)
         return TRUE;
     GDateTime *now = g_date_time_new_now_utc();
     GTimeSpan diff = g_date_time_difference(now, ctx->datetime);
     g_date_time_unref(now);
-    return diff >= (G_TIME_SPAN_MINUTE * 5);
+    return diff >= (G_TIME_SPAN_MINUTE * ttl);
 }

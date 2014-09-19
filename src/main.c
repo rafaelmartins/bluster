@@ -42,6 +42,7 @@ main(int argc, char **argv)
     balde_app_add_url_rule(app, "main", "/", BALDE_HTTP_GET, main_view);
     balde_app_set_config_from_envvar(app, "oauth_token", "RANT_OAUTH_TOKEN", TRUE);
     balde_app_set_config_from_envvar(app, "gist_id", "RANT_GIST_ID", FALSE);
+    balde_app_set_config_from_envvar(app, "gist_ttl", "RANT_GIST_TTL", TRUE);
     balde_app_run(app, argc, argv);
     balde_app_free(app);
     return 0;

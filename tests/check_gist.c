@@ -100,7 +100,7 @@ test_gist_ctx_needs_reload_true(void)
     ctx->content = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
-    g_assert(rant_gist_ctx_needs_reload(ctx));
+    g_assert(rant_gist_ctx_needs_reload(ctx, 5));
     rant_gist_ctx_free(ctx);
 }
 
@@ -113,7 +113,7 @@ test_gist_ctx_needs_reload_false(void)
     ctx->content = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
-    g_assert(!rant_gist_ctx_needs_reload(ctx));
+    g_assert(!rant_gist_ctx_needs_reload(ctx, 5));
     rant_gist_ctx_free(ctx);
 }
 
@@ -126,7 +126,7 @@ test_gist_ctx_needs_reload_equals(void)
     ctx->content = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
-    g_assert(!rant_gist_ctx_needs_reload(ctx));
+    g_assert(!rant_gist_ctx_needs_reload(ctx, 5));
     rant_gist_ctx_free(ctx);
 }
 
