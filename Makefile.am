@@ -93,10 +93,10 @@ rant_CFLAGS = \
 	-I$(top_srcdir)/src
 
 rant_LDADD = \
+	librant.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_LIBS) \
-	librant.la
+	$(JSON_GLIB_LIBS)
 
 
 ## Build rules: tests
@@ -115,10 +115,10 @@ tests_check_requests_LDFLAGS = \
 	-no-install
 
 tests_check_requests_LDADD = \
+	librant.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_LIBS) \
-	librant.la
+	$(JSON_GLIB_LIBS)
 
 tests_check_gist_SOURCES = \
 	tests/check_gist.c \
@@ -136,10 +136,10 @@ tests_check_gist_LDFLAGS = \
 	-no-install
 
 tests_check_gist_LDADD = \
+	librant.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_LIBS) \
-	librant.la
+	$(JSON_GLIB_LIBS)
 
 tests_check_helpers_SOURCES = \
 	tests/check_helpers.c \
@@ -155,10 +155,10 @@ tests_check_helpers_LDFLAGS = \
 	-no-install
 
 tests_check_helpers_LDADD = \
+	librant.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_LIBS) \
-	librant.la
+	$(JSON_GLIB_LIBS)
 
 
 ## Helpers: Local clean
