@@ -19,7 +19,7 @@ BUILT_SOURCES = \
 	.version
 
 noinst_LTLIBRARIES = \
-	librant.la
+	libbluster.la
 
 noinst_HEADERS = \
 	src/requests.h \
@@ -29,7 +29,7 @@ noinst_HEADERS = \
 	tests/utils.h
 
 bin_PROGRAMS = \
-	rant
+	bluster
 
 check_PROGRAMS = \
 	tests/check_requests \
@@ -42,19 +42,19 @@ TESTS = \
 
 ## Build rules: convenience library
 
-librant_la_SOURCES = \
+libbluster_la_SOURCES = \
 	src/requests.c \
 	src/gist.c \
 	src/helpers.c \
 	src/free.c
 
-librant_la_CFLAGS = \
+libbluster_la_CFLAGS = \
 	$(BALDE_CFLAGS) \
 	$(LIBCURL_CFLAGS) \
 	$(JSON_GLIB_CFLAGS) \
 	-I$(top_srcdir)/src
 
-librant_la_LIBADD = \
+libbluster_la_LIBADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_CFLAGS)
@@ -74,26 +74,26 @@ src/static/resources.h: src/static/resources.xml $(shell $(GLIB_COMPILE_RESOURCE
 
 ## Build rules: binary
 
-rant_SOURCES = \
+bluster_SOURCES = \
 	src/main.c
 
-nodist_rant_SOURCES = \
+nodist_bluster_SOURCES = \
 	src/templates/base.c \
 	src/templates/base.h \
 	src/static/resources.c \
 	src/static/resources.h
 
-src/rant-main.$(OBJEXT): $(nodist_rant_SOURCES)
+src/bluster-main.$(OBJEXT): $(nodist_bluster_SOURCES)
 
-rant_CFLAGS = \
+bluster_CFLAGS = \
 	$(BALDE_CFLAGS) \
 	$(LIBCURL_CFLAGS) \
 	$(JSON_GLIB_CFLAGS) \
 	-I$(top_builddir)/src \
 	-I$(top_srcdir)/src
 
-rant_LDADD = \
-	librant.la \
+bluster_LDADD = \
+	libbluster.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_LIBS)
@@ -115,7 +115,7 @@ tests_check_requests_LDFLAGS = \
 	-no-install
 
 tests_check_requests_LDADD = \
-	librant.la \
+	libbluster.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_LIBS)
@@ -136,7 +136,7 @@ tests_check_gist_LDFLAGS = \
 	-no-install
 
 tests_check_gist_LDADD = \
-	librant.la \
+	libbluster.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_LIBS)
@@ -155,7 +155,7 @@ tests_check_helpers_LDFLAGS = \
 	-no-install
 
 tests_check_helpers_LDADD = \
-	librant.la \
+	libbluster.la \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_LIBS)

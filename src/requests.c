@@ -1,6 +1,6 @@
 /*
- * rant: A web app to publish single-page rants written in markdown using
- *       GitHub Gists.
+ * bluster: A web app to publish single-page texts written in markdown using
+ *          GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
  * This program can be distributed under the terms of the LGPL-2 License.
@@ -18,7 +18,7 @@
 
 
 size_t
-rant_curl_write_callback(void *contents, size_t size, size_t nmemb, void *userp)
+bluster_curl_write_callback(void *contents, size_t size, size_t nmemb, void *userp)
 {
     GString **str = (GString**) userp;
     *str = g_string_append_len(*str, contents, size * nmemb);
@@ -27,7 +27,7 @@ rant_curl_write_callback(void *contents, size_t size, size_t nmemb, void *userp)
 
 
 GString*
-rant_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
+bluster_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
 {
     struct curl_slist *headers = NULL;
 
@@ -52,7 +52,7 @@ rant_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
     curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
     curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
-    curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, rant_curl_write_callback);
+    curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, bluster_curl_write_callback);
     curl_easy_setopt(hnd, CURLOPT_WRITEDATA, (void *) &rv);
 
     if(curl_easy_perform(hnd) != CURLE_OK) {

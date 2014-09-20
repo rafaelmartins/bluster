@@ -1,6 +1,6 @@
 /*
- * rant: A web app to publish single-page rants written in markdown using
- *       GitHub Gists.
+ * bluster: A web app to publish single-page texts written in markdown using
+ *          GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
  * This program can be distributed under the terms of the LGPL-2 License.
@@ -19,8 +19,8 @@
 #include "free.h"
 
 
-rant_gist_ctx_t*
-rant_get_gist_ctx(balde_app_t *app)
+bluster_gist_ctx_t*
+bluster_get_gist_ctx(balde_app_t *app)
 {
     const gchar *gist_id = balde_app_get_config(app, "gist_id");
     const gchar *gist_ttl = balde_app_get_config(app, "gist_ttl");
@@ -32,18 +32,18 @@ rant_get_gist_ctx(balde_app_t *app)
             balde_abort_set_error_with_description(app, 500,
                 "Invalid value of gist TTL");
     }
-    rant_gist_ctx_t *ctx = (rant_gist_ctx_t*) app->user_data;
-    if (rant_gist_ctx_needs_reload(ctx, ttl)) {
-        rant_gist_ctx_t *new_ctx = rant_fetch_gist(gist_id, oauth_token);
-        rant_gist_ctx_free(ctx);
+    bluster_gist_ctx_t *ctx = (bluster_gist_ctx_t*) app->user_data;
+    if (bluster_gist_ctx_needs_reload(ctx, ttl)) {
+        bluster_gist_ctx_t *new_ctx = bluster_fetch_gist(gist_id, oauth_token);
+        bluster_gist_ctx_free(ctx);
         app->user_data = new_ctx;
     }
-    return (rant_gist_ctx_t*) app->user_data;
+    return (bluster_gist_ctx_t*) app->user_data;
 }
 
 
 gchar*
-rant_get_title(const gchar *content)
+bluster_get_title(const gchar *content)
 {
     gchar *content_ = g_strdup(content);
     gchar *tmp = content_;
@@ -77,5 +77,5 @@ rant_get_title(const gchar *content)
 gchar*
 balde_tmpl_title(balde_app_t *app, balde_request_t *request, const gchar *content)
 {
-    return rant_get_title(content);
+    return bluster_get_title(content);
 }

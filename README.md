@@ -1,4 +1,4 @@
-rant
-====
+bluster
+=======
 
-A web app to publish single-page rants written in markdown using GitHub Gists
+A web app to publish single-page texts written in markdown using GitHub Gists

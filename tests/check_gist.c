@@ -1,6 +1,6 @@
 /*
- * rant: A web app to publish single-page rants written in markdown using
- *       GitHub Gists.
+ * bluster: A web app to publish single-page texts written in markdown using
+ *          GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
  * This program can be distributed under the terms of the LGPL-2 License.
@@ -35,12 +35,12 @@ test_fetch_gist(void)
     expected_urls[1] = NULL;
     url_count = 0;
     expected_token = NULL;
-    rant_gist_ctx_t *ctx = rant_fetch_gist("123456", NULL);
+    bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", NULL);
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "contents of gist");
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d462f");
     g_assert(ctx->datetime != NULL);
-    rant_gist_ctx_free(ctx);
+    bluster_gist_ctx_free(ctx);
     g_free(gist_json);
 }
 
@@ -55,12 +55,12 @@ test_fetch_gist_truncated(void)
         "8c4d2d43d178df44f4c03a7f2ac0ff512853564e/ring.erl";
     url_count = 0;
     expected_token = "asdfgdfhfgj";
-    rant_gist_ctx_t *ctx = rant_fetch_gist("123456", "asdfgdfhfgj");
+    bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", "asdfgdfhfgj");
     g_assert(ctx != NULL);
     g_assert_cmpstr(ctx->content, ==, "bola");
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d461e");
     g_assert(ctx->datetime != NULL);
-    rant_gist_ctx_free(ctx);
+    bluster_gist_ctx_free(ctx);
     g_free(gist_json);
 }
 
@@ -74,7 +74,7 @@ test_fetch_gist_invalid(void)
     expected_urls[1] = NULL;
     url_count = 0;
     expected_token = NULL;
-    g_assert(rant_fetch_gist("123456", NULL) == NULL);
+    g_assert(bluster_fetch_gist("123456", NULL) == NULL);
 }
 
 
@@ -88,7 +88,7 @@ test_fetch_gist_invalid_content(void)
         "8c4d2d43d178df44f4c03a7f2ac0ff512853564e/ring.erl";
     url_count = 0;
     expected_token = "asdfgdfhfgj";
-    g_assert(rant_fetch_gist("123456", "asdfgdfhfgj") == NULL);
+    g_assert(bluster_fetch_gist("123456", "asdfgdfhfgj") == NULL);
 }
 
 
@@ -96,12 +96,12 @@ void
 test_gist_ctx_needs_reload_true(void)
 {
     unix_utc = 1234568250;
-    rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
+    bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
     ctx->content = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
-    g_assert(rant_gist_ctx_needs_reload(ctx, 5));
-    rant_gist_ctx_free(ctx);
+    g_assert(bluster_gist_ctx_needs_reload(ctx, 5));
+    bluster_gist_ctx_free(ctx);
 }
 
 
@@ -109,12 +109,12 @@ void
 test_gist_ctx_needs_reload_false(void)
 {
     unix_utc = 1234567899;
-    rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
+    bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
     ctx->content = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
-    g_assert(!rant_gist_ctx_needs_reload(ctx, 5));
-    rant_gist_ctx_free(ctx);
+    g_assert(!bluster_gist_ctx_needs_reload(ctx, 5));
+    bluster_gist_ctx_free(ctx);
 }
 
 
@@ -122,12 +122,12 @@ void
 test_gist_ctx_needs_reload_equals(void)
 {
     unix_utc = 1234567890;
-    rant_gist_ctx_t *ctx = g_new(rant_gist_ctx_t, 1);
+    bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
     ctx->content = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
-    g_assert(!rant_gist_ctx_needs_reload(ctx, 5));
-    rant_gist_ctx_free(ctx);
+    g_assert(!bluster_gist_ctx_needs_reload(ctx, 5));
+    bluster_gist_ctx_free(ctx);
 }
 
 

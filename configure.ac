@@ -1,8 +1,8 @@
 AC_PREREQ([2.69])
 
-AC_INIT([rant], [m4_esyscmd(build-aux/git-version-gen .tarball-version)],
-  [https://github.com/rafaelmartins/rant/issues], [rant],
-  [https://github.com/rafaelmartins/rant])
+AC_INIT([bluster], [m4_esyscmd(build-aux/git-version-gen .tarball-version)],
+  [https://github.com/rafaelmartins/bluster/issues], [bluster],
+  [https://github.com/rafaelmartins/bluster])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -15,7 +15,7 @@ LT_INIT
 
 AC_PROG_CC_C99
 AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
-  AC_MSG_ERROR([no C99 compiler found, rant requires a C99 compiler.])
+  AC_MSG_ERROR([no C99 compiler found, bluster requires a C99 compiler.])
 ])
 
 AC_ARG_WITH([valgrind], AS_HELP_STRING([--without-valgrind],

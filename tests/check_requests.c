@@ -1,6 +1,6 @@
 /*
- * rant: A web app to publish single-page rants written in markdown using
- *       GitHub Gists.
+ * bluster: A web app to publish single-page texts written in markdown using
+ *          GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
  * This program can be distributed under the terms of the LGPL-2 License.
@@ -22,7 +22,7 @@ CURLcode return_value = CURLE_OK;
 void
 test_fetch_url(void)
 {
-    GString *str = rant_fetch_url("http://google.com", NULL, TRUE);
+    GString *str = bluster_fetch_url("http://google.com", NULL, TRUE);
     g_assert(str != NULL);
     g_assert_cmpstr(str->str, ==, "");
     g_string_free(str, TRUE);
@@ -33,7 +33,7 @@ void
 test_fetch_url_nok(void)
 {
     return_value = CURLE_HTTP_NOT_FOUND;
-    g_assert(rant_fetch_url("http://google.com", NULL, TRUE) == NULL);
+    g_assert(bluster_fetch_url("http://google.com", NULL, TRUE) == NULL);
 }
 
 
@@ -41,8 +41,8 @@ void
 test_curl_write_callback(void)
 {
     GString *str = g_string_new("");
-    g_assert_cmpint(rant_curl_write_callback("guda", sizeof(char), 4, &str), ==, 4);
-    g_assert_cmpint(rant_curl_write_callback("bola", sizeof(char), 4, &str), ==, 4);
+    g_assert_cmpint(bluster_curl_write_callback("guda", sizeof(char), 4, &str), ==, 4);
+    g_assert_cmpint(bluster_curl_write_callback("bola", sizeof(char), 4, &str), ==, 4);
     g_assert_cmpint(str->len, ==, 8);
     g_assert_cmpstr(str->str, ==, "gudabola");
     g_string_free(str, TRUE);

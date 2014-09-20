@@ -1,6 +1,6 @@
 /*
- * rant: A web app to publish single-page rants written in markdown using
- *       GitHub Gists.
+ * bluster: A web app to publish single-page texts written in markdown using
+ *          GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
  * This program can be distributed under the terms of the LGPL-2 License.
@@ -18,20 +18,20 @@
 #include "gist.h"
 
 
-rant_gist_ctx_t*
-rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
+bluster_gist_ctx_t*
+bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
 {
     if (gist_id == NULL)
         return NULL;
 
     gchar *url = g_strdup_printf("https://api.github.com/gists/%s", gist_id);
-    GString *response = rant_fetch_url(url, oauth_token, TRUE);
+    GString *response = bluster_fetch_url(url, oauth_token, TRUE);
     g_free(url);
 
     if (response == NULL)
         return NULL;
 
-    rant_gist_ctx_t *ctx = NULL;
+    bluster_gist_ctx_t *ctx = NULL;
 
     JsonParser *parser = json_parser_new();
 
@@ -57,7 +57,7 @@ rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
     if (truncated) {  // fetch from raw_url
         if (!json_reader_read_member(reader, "raw_url"))
             goto point2;
-        GString *raw = rant_fetch_url(json_reader_get_string_value(reader),
+        GString *raw = bluster_fetch_url(json_reader_get_string_value(reader),
             oauth_token, FALSE);
         if (raw == NULL)
             goto point2;
@@ -81,7 +81,7 @@ rant_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
     if (!json_reader_read_member(reader, "version"))
         goto point3;
 
-    ctx = g_new(rant_gist_ctx_t, 1);
+    ctx = g_new(bluster_gist_ctx_t, 1);
     ctx->content = g_strdup(content);
     ctx->commit = g_strdup(json_reader_get_string_value(reader));
     ctx->datetime = g_date_time_new_now_utc();
@@ -98,7 +98,7 @@ point1:
 
 
 gboolean
-rant_gist_ctx_needs_reload(rant_gist_ctx_t *ctx, gdouble ttl)
+bluster_gist_ctx_needs_reload(bluster_gist_ctx_t *ctx, gdouble ttl)
 {
     if (ctx == NULL)
         return TRUE;

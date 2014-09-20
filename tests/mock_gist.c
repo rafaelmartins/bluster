@@ -1,6 +1,6 @@
 /*
- * rant: A web app to publish single-page rants written in markdown using
- *       GitHub Gists.
+ * bluster: A web app to publish single-page texts written in markdown using
+ *          GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
  * This program can be distributed under the terms of the LGPL-2 License.
@@ -21,9 +21,9 @@ extern guint url_count;
 extern gchar *expected_urls[2];
 extern gchar *expected_token;
 
-// this is a poor man's mock of rant_fetch_url :)
+// this is a poor man's mock of bluster_fetch_url :)
 GString*
-rant_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
+bluster_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_json)
 {
     g_assert_cmpstr(url, ==, expected_urls[url_count++]);
     if (expected_token == NULL)

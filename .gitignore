@@ -40,7 +40,7 @@ Makefile.in
 # installed .m4 files
 /m4/*.m4
 
-/rant
+/bluster
 
 # built sources
 /src/static/*.c
@@ -58,6 +58,6 @@ Makefile.in
 /tests/valgrind-*.xml
 
 # tarballs
-rant-*.tar.*
+bluster-*.tar.*
 
 /build/
