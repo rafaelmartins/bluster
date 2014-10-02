@@ -19,6 +19,8 @@
 #include "free.h"
 
 
+G_LOCK_DEFINE_STATIC(ctx);
+
 bluster_gist_ctx_t*
 bluster_get_gist_ctx(balde_app_t *app)
 {
@@ -32,12 +34,14 @@ bluster_get_gist_ctx(balde_app_t *app)
             balde_abort_set_error_with_description(app, 500,
                 "Invalid value of gist TTL");
     }
+    G_LOCK(ctx);
     bluster_gist_ctx_t *ctx = (bluster_gist_ctx_t*) app->user_data;
     if (bluster_gist_ctx_needs_reload(ctx, ttl)) {
         bluster_gist_ctx_t *new_ctx = bluster_fetch_gist(gist_id, oauth_token);
         bluster_gist_ctx_free(ctx);
         app->user_data = new_ctx;
     }
+    G_UNLOCK(ctx);
     return (bluster_gist_ctx_t*) app->user_data;
 }
 
