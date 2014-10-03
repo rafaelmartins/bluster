@@ -19,8 +19,6 @@
 #include "templates/base.h"
 
 
-G_LOCK_DEFINE_STATIC(template);
-
 balde_response_t*
 main_view(balde_app_t *app, balde_request_t *request)
 {
@@ -31,9 +29,7 @@ main_view(balde_app_t *app, balde_request_t *request)
     balde_response_set_header(response, "x-powered-by", PACKAGE_STRING);
     balde_response_set_tmpl_var(response, "bluster_url", PACKAGE_URL);
     balde_response_set_tmpl_var(response, "content", ctx->content);
-    G_LOCK(template);
     balde_template_base(app, request, response);
-    G_UNLOCK(template);
     return response;
 }
 
