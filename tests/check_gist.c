@@ -38,6 +38,7 @@ test_fetch_gist(void)
     bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", NULL);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
+    g_assert_cmpstr(ctx->headline, ==, "description of gist");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "ring.erl");
     g_assert_cmpstr(file->content, ==, "contents of gist");
@@ -62,6 +63,7 @@ test_fetch_gist_truncated(void)
     bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", "asdfgdfhfgj");
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
+    g_assert_cmpstr(ctx->headline, ==, "description of gist");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "ring.erl");
     g_assert_cmpstr(file->content, ==, "bola");
@@ -112,6 +114,7 @@ test_fetch_gist_multiple_files(void)
     bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", NULL);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
+    g_assert_cmpstr(ctx->headline, ==, "description of gist");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "ring.erl");
     g_assert_cmpstr(file->content, ==, "contents of gist");
@@ -140,6 +143,7 @@ test_gist_ctx_needs_reload_true(void)
 {
     unix_utc = 1234568250;
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
+    ctx->headline = NULL;
     ctx->files = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
@@ -153,6 +157,7 @@ test_gist_ctx_needs_reload_false(void)
 {
     unix_utc = 1234567899;
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
+    ctx->headline = NULL;
     ctx->files = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
@@ -166,6 +171,7 @@ test_gist_ctx_needs_reload_equals(void)
 {
     unix_utc = 1234567890;
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
+    ctx->headline = NULL;
     ctx->files = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);

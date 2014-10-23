@@ -84,6 +84,11 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
     json_reader_end_element(reader);
     json_reader_end_element(reader);
 
+    if (!json_reader_read_member(reader, "description"))
+        goto point3;
+    gchar *headline = g_strdup(json_reader_get_string_value(reader));
+    json_reader_end_element(reader);
+
     if (!json_reader_read_member(reader, "history"))
         goto point3;
     if (!json_reader_read_element(reader, 0))
@@ -92,6 +97,7 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         goto point3;
 
     ctx = g_new(bluster_gist_ctx_t, 1);
+    ctx->headline = headline;
     ctx->files = file_list;
     ctx->commit = g_strdup(json_reader_get_string_value(reader));
     ctx->datetime = g_date_time_new_now_utc();

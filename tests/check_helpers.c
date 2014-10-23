@@ -18,6 +18,7 @@
 
 gchar *name = NULL;
 gchar *content = NULL;
+gchar *headline = NULL;
 gchar *commit = NULL;
 gint64 unix_utc = -1;
 gchar *expected_token = NULL;
@@ -30,6 +31,7 @@ test_get_gist_ctx_reload(void)
 {
     name = "bola.txt";
     content = "bola";
+    headline = "head";
     commit = "guda";
     unix_utc = -1;
     needs_reload = TRUE;
@@ -58,6 +60,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 {
     name = "bola.txt";
     content = "bola";
+    headline = "head";
     commit = "guda";
     unix_utc = -1;
     needs_reload = TRUE;
@@ -65,6 +68,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 
     bluster_gist_ctx_t *old_ctx = g_new(bluster_gist_ctx_t, 1);
     old_ctx->files = NULL;
+    old_ctx->headline = NULL;
 
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
     f->name = g_strdup("bola.txt");
@@ -81,6 +85,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
+    g_assert_cmpstr(ctx->headline, ==, "head");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "bola.txt");
     g_assert_cmpstr(file->content, ==, "bola");
@@ -100,6 +105,7 @@ test_get_gist_ctx_no_reload(void)
 {
     name = "bola.txt";
     content = "bola";
+    headline = "head";
     commit = "guda";
     unix_utc = -1;
     needs_reload = FALSE;
@@ -107,6 +113,7 @@ test_get_gist_ctx_no_reload(void)
 
     bluster_gist_ctx_t *old_ctx = g_new(bluster_gist_ctx_t, 1);
     old_ctx->files = NULL;
+    old_ctx->headline = g_strdup("head");
 
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
     f->name = g_strdup("bola.txt");
@@ -122,6 +129,7 @@ test_get_gist_ctx_no_reload(void)
     bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
+    g_assert_cmpstr(ctx->headline, ==, "head");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "bola.txt");
     g_assert_cmpstr(file->content, ==, "chunda");

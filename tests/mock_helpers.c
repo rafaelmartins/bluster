@@ -18,6 +18,7 @@
 // this thing isn't thread safe, bla, bla, bla, but this is just a test :)
 extern gchar *name;
 extern gchar *content;
+extern gchar *headline;
 extern gchar *commit;
 extern gint64 unix_utc;
 extern gchar *expected_token;
@@ -35,6 +36,7 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         g_assert_cmpstr(oauth_token, ==, expected_token);
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
     ctx->files = NULL;
+    ctx->headline = g_strdup(headline);
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
     f->name = g_strdup(name);
     f->content = g_strdup(content);

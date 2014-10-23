@@ -33,6 +33,7 @@ bluster_gist_ctx_free(bluster_gist_ctx_t *ctx)
 {
     if (ctx == NULL)
         return;
+    g_free(ctx->headline);
     g_slist_free_full(ctx->files, (GDestroyNotify) bluster_gist_file_free);
     g_free(ctx->commit);
     if (ctx->datetime != NULL)

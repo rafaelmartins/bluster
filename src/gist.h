@@ -18,6 +18,7 @@ typedef struct {
 } bluster_gist_file_t;
 
 typedef struct {
+    gchar *headline;
     GSList *files;
     gchar *commit;
     GDateTime *datetime;
