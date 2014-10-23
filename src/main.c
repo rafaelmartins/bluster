@@ -29,7 +29,6 @@ main_view(balde_app_t *app, balde_request_t *request)
     balde_response_set_header(response, "x-powered-by", PACKAGE_STRING);
     balde_response_set_tmpl_var(response, "bluster_url", PACKAGE_URL);
     bluster_gist_file_t *file = ctx->files->data;
-    g_printerr("%s\n", file->name);
     balde_response_set_tmpl_var(response, "content", file->content);
     balde_template_base(app, request, response);
     return response;
