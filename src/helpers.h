@@ -15,6 +15,7 @@
 
 bluster_gist_ctx_t* bluster_get_gist_ctx(balde_app_t *app);
 gchar* bluster_get_title(const gchar *content);
+gchar* bluster_get_slug(const gchar *filename);
 gchar* balde_tmpl_title(balde_app_t *app, balde_request_t *request, const gchar *content);
 
 #endif

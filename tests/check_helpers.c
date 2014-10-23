@@ -199,6 +199,46 @@ test_get_title(void)
 }
 
 
+void
+test_get_slug(void)
+{
+    gchar *slug = bluster_get_slug("001_bola.txt");
+    g_assert_cmpstr(slug, ==, "bola");
+    g_free(slug);
+    slug = bluster_get_slug("001-bola.txt");
+    g_assert_cmpstr(slug, ==, "bola");
+    g_free(slug);
+    slug = bluster_get_slug("0_bola.md");
+    g_assert_cmpstr(slug, ==, "bola");
+    g_free(slug);
+    slug = bluster_get_slug("01_chunda.txt");
+    g_assert_cmpstr(slug, ==, "chunda");
+    g_free(slug);
+    slug = bluster_get_slug("001_bola.mkd");
+    g_assert_cmpstr(slug, ==, "bola");
+    g_free(slug);
+    slug = bluster_get_slug("001_bola.markdown");
+    g_assert_cmpstr(slug, ==, "bola");
+    g_free(slug);
+    slug = bluster_get_slug("bola.txt");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("bola.md");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("bola.mkd");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("bola.markdown");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("001_bola");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("001-bola");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("0_bola");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("01_chunda");
+    g_assert(slug == NULL);
+}
+
+
 int
 main(int argc, char** argv)
 {
@@ -209,5 +249,6 @@ main(int argc, char** argv)
     g_test_add_func("/helpers/get_gist_ctx_no_reload",
         test_get_gist_ctx_no_reload);
     g_test_add_func("/helpers/get_title", test_get_title);
+    g_test_add_func("/helpers/get_slug", test_get_slug);
     return g_test_run();
 }

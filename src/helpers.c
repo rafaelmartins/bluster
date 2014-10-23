@@ -79,6 +79,22 @@ bluster_get_title(const gchar *content)
 
 
 gchar*
+bluster_get_slug(const gchar *filename)
+{
+    GRegex *re_slug = g_regex_new("[0-9]+[_-](.*)\\.(txt|md|mkd|markdown)",
+        0, 0, NULL);
+    GMatchInfo *info;
+    gchar *rv = NULL;
+    if (g_regex_match(re_slug, filename, 0, &info)) {
+        rv = g_match_info_fetch(info, 1);
+    }
+    g_match_info_free(info);
+    g_regex_unref(re_slug);
+    return rv;
+}
+
+
+gchar*
 balde_tmpl_title(balde_app_t *app, balde_request_t *request, const gchar *content)
 {
     return bluster_get_title(content);
