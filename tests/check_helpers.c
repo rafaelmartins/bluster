@@ -16,6 +16,7 @@
 #include "../src/helpers.h"
 #include "../src/free.h"
 
+gchar *name = NULL;
 gchar *content = NULL;
 gchar *commit = NULL;
 gint64 unix_utc = -1;
@@ -27,6 +28,7 @@ gdouble expected_ttl = 5.0;
 void
 test_get_gist_ctx_reload(void)
 {
+    name = "bola.txt";
     content = "bola";
     commit = "guda";
     unix_utc = -1;
@@ -37,7 +39,11 @@ test_get_gist_ctx_reload(void)
 
     bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
     g_assert(ctx != NULL);
-    g_assert_cmpstr(ctx->content, ==, "bola");
+    g_assert(ctx->files != NULL);
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->content, ==, "bola");
+    g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
     g_assert(ctx->datetime != NULL);
     g_assert(ctx == app->user_data);
@@ -50,6 +56,7 @@ test_get_gist_ctx_reload(void)
 void
 test_get_gist_ctx_reload_with_old_ctx(void)
 {
+    name = "bola.txt";
     content = "bola";
     commit = "guda";
     unix_utc = -1;
@@ -57,7 +64,13 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     expected_ttl = 10.0;
 
     bluster_gist_ctx_t *old_ctx = g_new(bluster_gist_ctx_t, 1);
-    old_ctx->content = g_strdup("chunda");
+    old_ctx->files = NULL;
+
+    bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
+    f->name = g_strdup("bola.txt");
+    f->content = g_strdup("chunda");
+
+    old_ctx->files = g_slist_append(old_ctx->files, f);
     old_ctx->commit = g_strdup("arcoiro");
     old_ctx->datetime = NULL;
 
@@ -67,7 +80,11 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 
     bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
     g_assert(ctx != NULL);
-    g_assert_cmpstr(ctx->content, ==, "bola");
+    g_assert(ctx->files != NULL);
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->content, ==, "bola");
+    g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
     g_assert(ctx->datetime != NULL);
     g_assert(ctx == app->user_data);
@@ -81,6 +98,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 void
 test_get_gist_ctx_no_reload(void)
 {
+    name = "bola.txt";
     content = "bola";
     commit = "guda";
     unix_utc = -1;
@@ -88,7 +106,13 @@ test_get_gist_ctx_no_reload(void)
     expected_ttl = 5.0;
 
     bluster_gist_ctx_t *old_ctx = g_new(bluster_gist_ctx_t, 1);
-    old_ctx->content = g_strdup("chunda");
+    old_ctx->files = NULL;
+
+    bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
+    f->name = g_strdup("bola.txt");
+    f->content = g_strdup("chunda");
+
+    old_ctx->files = g_slist_append(old_ctx->files, f);
     old_ctx->commit = g_strdup("arcoiro");
     old_ctx->datetime = NULL;
 
@@ -97,7 +121,11 @@ test_get_gist_ctx_no_reload(void)
 
     bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
     g_assert(ctx != NULL);
-    g_assert_cmpstr(ctx->content, ==, "chunda");
+    g_assert(ctx->files != NULL);
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->content, ==, "chunda");
+    g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "arcoiro");
     g_assert(ctx->datetime == NULL);
     g_assert(ctx == app->user_data);

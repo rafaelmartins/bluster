@@ -37,7 +37,11 @@ test_fetch_gist(void)
     expected_token = NULL;
     bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", NULL);
     g_assert(ctx != NULL);
-    g_assert_cmpstr(ctx->content, ==, "contents of gist");
+    g_assert(ctx->files != NULL);
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "ring.erl");
+    g_assert_cmpstr(file->content, ==, "contents of gist");
+    g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d462f");
     g_assert(ctx->datetime != NULL);
     bluster_gist_ctx_free(ctx);
@@ -57,7 +61,11 @@ test_fetch_gist_truncated(void)
     expected_token = "asdfgdfhfgj";
     bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", "asdfgdfhfgj");
     g_assert(ctx != NULL);
-    g_assert_cmpstr(ctx->content, ==, "bola");
+    g_assert(ctx->files != NULL);
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "ring.erl");
+    g_assert_cmpstr(file->content, ==, "bola");
+    g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d461e");
     g_assert(ctx->datetime != NULL);
     bluster_gist_ctx_free(ctx);
@@ -89,6 +97,41 @@ test_fetch_gist_invalid_content(void)
     url_count = 0;
     expected_token = "asdfgdfhfgj";
     g_assert(bluster_fetch_gist("123456", "asdfgdfhfgj") == NULL);
+    g_free(gist_json);
+}
+
+
+void
+test_fetch_gist_multiple_files(void)
+{
+    gist_json = load_fixture("gist-multiple-files.json");
+    expected_urls[0] = "https://api.github.com/gists/123456";
+    expected_urls[1] = NULL;
+    url_count = 0;
+    expected_token = NULL;
+    bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", NULL);
+    g_assert(ctx != NULL);
+    g_assert(ctx->files != NULL);
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "ring.erl");
+    g_assert_cmpstr(file->content, ==, "contents of gist");
+
+    g_assert(ctx->files->next != NULL);
+    file = ctx->files->next->data;
+    g_assert_cmpstr(file->name, ==, "sing.erl");
+    g_assert_cmpstr(file->content, ==, "contents of hist");
+
+    g_assert(ctx->files->next->next != NULL);
+    file = ctx->files->next->next->data;
+    g_assert_cmpstr(file->name, ==, "ting.erl");
+    g_assert_cmpstr(file->content, ==, "contents of iist");
+
+    g_assert(ctx->files->next->next->next == NULL);
+
+    g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d462f");
+    g_assert(ctx->datetime != NULL);
+    bluster_gist_ctx_free(ctx);
+    g_free(gist_json);
 }
 
 
@@ -97,7 +140,7 @@ test_gist_ctx_needs_reload_true(void)
 {
     unix_utc = 1234568250;
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
-    ctx->content = NULL;
+    ctx->files = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
     g_assert(bluster_gist_ctx_needs_reload(ctx, 5));
@@ -110,7 +153,7 @@ test_gist_ctx_needs_reload_false(void)
 {
     unix_utc = 1234567899;
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
-    ctx->content = NULL;
+    ctx->files = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
     g_assert(!bluster_gist_ctx_needs_reload(ctx, 5));
@@ -123,7 +166,7 @@ test_gist_ctx_needs_reload_equals(void)
 {
     unix_utc = 1234567890;
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
-    ctx->content = NULL;
+    ctx->files = NULL;
     ctx->commit = NULL;
     ctx->datetime = g_date_time_new_from_unix_utc(1234567890);
     g_assert(!bluster_gist_ctx_needs_reload(ctx, 5));
@@ -140,6 +183,8 @@ main(int argc, char** argv)
     g_test_add_func("/gist/fetch_gist_invalid", test_fetch_gist_invalid);
     g_test_add_func("/gist/fetch_gist_invalid_content",
         test_fetch_gist_invalid_content);
+    g_test_add_func("/gist/fetch_gist_multiple_files",
+        test_fetch_gist_multiple_files);
     g_test_add_func("/gist/ctx_needs_reload_true",
         test_gist_ctx_needs_reload_true);
     g_test_add_func("/gist/ctx_needs_reload_false",

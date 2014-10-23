@@ -18,11 +18,22 @@
 
 
 void
+bluster_gist_file_free(bluster_gist_file_t *file)
+{
+    if (file == NULL)
+        return;
+    g_free(file->name);
+    g_free(file->content);
+    g_free(file);
+}
+
+
+void
 bluster_gist_ctx_free(bluster_gist_ctx_t *ctx)
 {
     if (ctx == NULL)
         return;
-    g_free(ctx->content);
+    g_slist_free_full(ctx->files, (GDestroyNotify) bluster_gist_file_free);
     g_free(ctx->commit);
     if (ctx->datetime != NULL)
         g_date_time_unref(ctx->datetime);

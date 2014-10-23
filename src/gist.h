@@ -13,7 +13,12 @@
 #include <glib.h>
 
 typedef struct {
+    gchar *name;
     gchar *content;
+} bluster_gist_file_t;
+
+typedef struct {
+    GSList *files;
     gchar *commit;
     GDateTime *datetime;
 } bluster_gist_ctx_t;

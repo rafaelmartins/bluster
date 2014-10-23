@@ -16,6 +16,7 @@
 #include "../src/gist.h"
 
 // this thing isn't thread safe, bla, bla, bla, but this is just a test :)
+extern gchar *name;
 extern gchar *content;
 extern gchar *commit;
 extern gint64 unix_utc;
@@ -33,7 +34,11 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
     else
         g_assert_cmpstr(oauth_token, ==, expected_token);
     bluster_gist_ctx_t *ctx = g_new(bluster_gist_ctx_t, 1);
-    ctx->content = g_strdup(content);
+    ctx->files = NULL;
+    bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
+    f->name = g_strdup(name);
+    f->content = g_strdup(content);
+    ctx->files = g_slist_append(ctx->files, f);
     ctx->commit = g_strdup(commit);
     if (unix_utc == -1)
         unix_utc = 1234567890;

@@ -46,31 +46,41 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
 
     if (!json_reader_read_member(reader, "files"))
         goto point2;
-    if (!json_reader_read_element(reader, 0))
-        goto point2;
-    if (!json_reader_read_member(reader, "truncated"))
-        goto point2;
 
-    gchar *content;
-    gboolean truncated = json_reader_get_boolean_value(reader);
-    json_reader_end_element(reader);
-    if (truncated) {  // fetch from raw_url
-        if (!json_reader_read_member(reader, "raw_url"))
-            goto point2;
-        GString *raw = bluster_fetch_url(json_reader_get_string_value(reader),
-            oauth_token, FALSE);
-        if (raw == NULL)
-            goto point2;
-        content = g_string_free(raw, FALSE);
-    }
-    else {
-        if (!json_reader_read_member(reader, "content"))
-            goto point2;
-        content = g_strdup(json_reader_get_string_value(reader));
+    gchar **files = json_reader_list_members(reader);
+    GSList *file_list = NULL;
+    for (guint i = 0; files[i] != NULL; i++) {
+        gchar *content = NULL;
+        if (!json_reader_read_member(reader, files[i]))
+            goto point3;
+        if (!json_reader_read_member(reader, "truncated"))
+            goto point3;
+
+        gboolean truncated = json_reader_get_boolean_value(reader);
+        json_reader_end_element(reader);
+        if (truncated) {  // fetch from raw_url
+            if (!json_reader_read_member(reader, "raw_url"))
+                goto point3;
+            GString *raw = bluster_fetch_url(json_reader_get_string_value(reader),
+                oauth_token, FALSE);
+            if (raw == NULL)
+                goto point3;
+            content = g_string_free(raw, FALSE);
+        }
+        else {
+            if (!json_reader_read_member(reader, "content"))
+                goto point3;
+            content = g_strdup(json_reader_get_string_value(reader));
+        }
+        json_reader_end_element(reader);
+        json_reader_end_element(reader);
+
+        bluster_gist_file_t *file = g_new(bluster_gist_file_t, 1);
+        file->name = g_strdup(files[i]);
+        file->content = content;
+        file_list = g_slist_append(file_list, file);
     }
 
-    json_reader_end_element(reader);
-    json_reader_end_element(reader);
     json_reader_end_element(reader);
     json_reader_end_element(reader);
 
@@ -82,12 +92,12 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         goto point3;
 
     ctx = g_new(bluster_gist_ctx_t, 1);
-    ctx->content = g_strdup(content);
+    ctx->files = file_list;
     ctx->commit = g_strdup(json_reader_get_string_value(reader));
     ctx->datetime = g_date_time_new_now_utc();
 
 point3:
-    g_free(content);
+    g_strfreev(files);
 point2:
     g_object_unref(reader);
 point1:
