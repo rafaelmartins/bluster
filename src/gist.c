@@ -54,6 +54,20 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         gchar *content = NULL;
         if (!json_reader_read_member(reader, files[i]))
             goto point3;
+
+        if (!json_reader_read_member(reader, "language"))
+            goto point3;
+
+        const gchar *language = NULL;
+        if (!json_reader_get_null_value(reader))
+            language = json_reader_get_string_value(reader);
+        json_reader_end_member(reader);
+
+        if (language == NULL || g_strcmp0(language, "Markdown") != 0) {
+            json_reader_end_member(reader);
+            continue;
+        }
+
         if (!json_reader_read_member(reader, "truncated"))
             goto point3;
 
@@ -73,8 +87,9 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
                 goto point3;
             content = g_strdup(json_reader_get_string_value(reader));
         }
-        json_reader_end_element(reader);
-        json_reader_end_element(reader);
+
+        json_reader_end_member(reader);
+        json_reader_end_member(reader);
 
         gchar *slug = bluster_get_slug(files[i]);
         if (slug == NULL)
@@ -91,8 +106,8 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         file_list = g_slist_append(file_list, file);
     }
 
-    json_reader_end_element(reader);
-    json_reader_end_element(reader);
+    json_reader_end_member(reader);
+    json_reader_end_member(reader);
 
     if (!json_reader_read_member(reader, "description"))
         goto point3;

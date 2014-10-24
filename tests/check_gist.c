@@ -140,6 +140,41 @@ test_fetch_gist_multiple_files(void)
 
 
 void
+test_fetch_gist_multiple_files_mixed(void)
+{
+    gist_json = load_fixture("gist-multiple-files-mixed.json");
+    expected_urls[0] = "https://api.github.com/gists/123456";
+    expected_urls[1] = NULL;
+    url_count = 0;
+    expected_token = NULL;
+    bluster_gist_ctx_t *ctx = bluster_fetch_gist("123456", NULL);
+    g_assert(ctx != NULL);
+    g_assert(ctx->files != NULL);
+    g_assert_cmpstr(ctx->headline, ==, "description of gist");
+    bluster_gist_file_t *file = ctx->files->data;
+    g_assert_cmpstr(file->name, ==, "002_sing.mkd");
+    g_assert_cmpstr(file->content, ==, "contents of hist");
+
+    g_assert(ctx->files->next != NULL);
+    file = ctx->files->next->data;
+    g_assert_cmpstr(file->name, ==, "003_ting.mkd");
+    g_assert_cmpstr(file->content, ==, "contents of iist");
+
+    g_assert(ctx->files->next->next != NULL);
+    file = ctx->files->next->next->data;
+    g_assert_cmpstr(file->name, ==, "005_ging.mkd");
+    g_assert_cmpstr(file->content, ==, "contents of qist");
+
+    g_assert(ctx->files->next->next->next == NULL);
+
+    g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d462f");
+    g_assert(ctx->datetime != NULL);
+    bluster_gist_ctx_free(ctx);
+    g_free(gist_json);
+}
+
+
+void
 test_gist_ctx_needs_reload_true(void)
 {
     unix_utc = 1234568250;
@@ -192,6 +227,8 @@ main(int argc, char** argv)
         test_fetch_gist_invalid_content);
     g_test_add_func("/gist/fetch_gist_multiple_files",
         test_fetch_gist_multiple_files);
+    g_test_add_func("/gist/fetch_gist_multiple_files_mixed",
+        test_fetch_gist_multiple_files_mixed);
     g_test_add_func("/gist/ctx_needs_reload_true",
         test_gist_ctx_needs_reload_true);
     g_test_add_func("/gist/ctx_needs_reload_false",

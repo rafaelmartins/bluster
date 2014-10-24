@@ -16,7 +16,8 @@ EXTRA_DIST = \
 	src/static/screen.css \
 	tests/fixtures/gist.json \
 	tests/fixtures/gist-truncated.json \
-	tests/fixtures/gist-multiple-files.json
+	tests/fixtures/gist-multiple-files.json \
+	tests/fixtures/gist-multiple-files-mixed.json
 
 CLEANFILES = \
 	tests/utils.c

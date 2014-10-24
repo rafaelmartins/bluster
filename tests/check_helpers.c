@@ -31,7 +31,7 @@ gdouble expected_ttl = 5.0;
 void
 test_get_gist_ctx_reload(void)
 {
-    name = "bola.txt";
+    name = "bola.md";
     title = "my title";
     content = "bolac";
     parsed_content = "parsed content";
@@ -48,7 +48,7 @@ test_get_gist_ctx_reload(void)
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
     bluster_gist_file_t *file = ctx->files->data;
-    g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->name, ==, "bola.md");
     g_assert_cmpstr(file->content, ==, "bolac");
     g_assert_cmpstr(file->slug, ==, "bola");
     g_assert(ctx->files->next == NULL);
@@ -64,7 +64,7 @@ test_get_gist_ctx_reload(void)
 void
 test_get_gist_ctx_reload_with_old_ctx(void)
 {
-    name = "bola.txt";
+    name = "bola.md";
     title = "my title";
     content = "bolac";
     parsed_content = "<p>parsed content</p>";
@@ -80,7 +80,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     old_ctx->headline = NULL;
 
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
-    f->name = g_strdup("bola.txt");
+    f->name = g_strdup("bola.md");
     f->title = g_strdup("my old title");
     f->content = g_strdup("chunda");
     f->parsed_content = g_strdup("<p>chunda</p>");
@@ -99,7 +99,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "head");
     bluster_gist_file_t *file = ctx->files->data;
-    g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->name, ==, "bola.md");
     g_assert_cmpstr(file->title, ==, "my title");
     g_assert_cmpstr(file->content, ==, "bolac");
     g_assert_cmpstr(file->parsed_content, ==, "<p>parsed content</p>");
@@ -118,7 +118,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 void
 test_get_gist_ctx_no_reload(void)
 {
-    name = "bola.txt";
+    name = "bola.md";
     title = "my title";
     content = "bolac";
     parsed_content = "<p>parsed content</p>";
@@ -134,7 +134,7 @@ test_get_gist_ctx_no_reload(void)
     old_ctx->headline = g_strdup("head");
 
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
-    f->name = g_strdup("bola.txt");
+    f->name = g_strdup("bola.md");
     f->title = g_strdup("my old title");
     f->content = g_strdup("chunda");
     f->parsed_content = g_strdup("<p>chunda</p>");
@@ -152,7 +152,7 @@ test_get_gist_ctx_no_reload(void)
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "head");
     bluster_gist_file_t *file = ctx->files->data;
-    g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->name, ==, "bola.md");
     g_assert_cmpstr(file->title, ==, "my old title");
     g_assert_cmpstr(file->content, ==, "chunda");
     g_assert_cmpstr(file->parsed_content, ==, "<p>chunda</p>");
@@ -234,25 +234,13 @@ test_get_title(void)
 void
 test_get_slug(void)
 {
-    gchar *slug = bluster_get_slug("001_bola.txt");
+    gchar *slug = bluster_get_slug("0_bola.md");
     g_assert_cmpstr(slug, ==, "bola");
-    g_free(slug);
-    slug = bluster_get_slug("001-bola.txt");
-    g_assert_cmpstr(slug, ==, "bola");
-    g_free(slug);
-    slug = bluster_get_slug("0_bola.md");
-    g_assert_cmpstr(slug, ==, "bola");
-    g_free(slug);
-    slug = bluster_get_slug("01_chunda.txt");
-    g_assert_cmpstr(slug, ==, "chunda");
     g_free(slug);
     slug = bluster_get_slug("001_bola.mkd");
     g_assert_cmpstr(slug, ==, "bola");
     g_free(slug);
     slug = bluster_get_slug("001_bola.markdown");
-    g_assert_cmpstr(slug, ==, "bola");
-    g_free(slug);
-    slug = bluster_get_slug("bola.txt");
     g_assert_cmpstr(slug, ==, "bola");
     g_free(slug);
     slug = bluster_get_slug("bola.md");
@@ -271,6 +259,14 @@ test_get_slug(void)
     slug = bluster_get_slug("0_bola");
     g_assert(slug == NULL);
     slug = bluster_get_slug("01_chunda");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("001_bola.txt");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("001-bola.txt");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("01_chunda.txt");
+    g_assert(slug == NULL);
+    slug = bluster_get_slug("bola.txt");
     g_assert(slug == NULL);
 }
 

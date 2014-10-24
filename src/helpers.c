@@ -80,7 +80,7 @@ bluster_get_title(const gchar *content)
 gchar*
 bluster_get_slug(const gchar *filename)
 {
-    GRegex *re_slug = g_regex_new("([0-9]+[_-])?(.*)\\.(txt|md|mkd|markdown)",
+    GRegex *re_slug = g_regex_new("([0-9]+[_-])?(.*)\\.(md|mkd|markdown)",
         0, 0, NULL);
     GMatchInfo *info;
     gchar *rv = NULL;
