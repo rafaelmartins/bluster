@@ -64,7 +64,7 @@ main_view(balde_app_t *app, balde_request_t *request)
         balde_template_footer(app, request, response);
         return response;
     }
-    else if (slug == NULL) {
+    if (slug == NULL) {
         balde_response_t* response = create_response();
         balde_response_set_tmpl_var(response, "title", ctx->headline);
         balde_template_header(app, request, response);
