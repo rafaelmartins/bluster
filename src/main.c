@@ -42,8 +42,8 @@ main_view(balde_app_t *app, balde_request_t *request)
 
     const gchar *slug = balde_request_get_view_arg(request, "slug");
 
-    bluster_gist_file_t *file = NULL;
     if (slug != NULL || (ctx->files != NULL && ctx->files->next == NULL)) {
+        bluster_gist_file_t *file = NULL;
         if (ctx->files != NULL && ctx->files->next == NULL)
             file = ctx->files->data;
         else {
