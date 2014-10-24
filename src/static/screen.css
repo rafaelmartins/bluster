@@ -41,8 +41,9 @@ a:hover {
     text-align: justify;
 }
 
-#list ul, #list li {
+#list, #list li {
     list-style: none;
+    padding: 0;
 }
 
 #list li {
