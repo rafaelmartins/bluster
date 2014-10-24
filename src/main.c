@@ -42,10 +42,11 @@ main_view(balde_app_t *app, balde_request_t *request)
 
     const gchar *slug = balde_request_get_view_arg(request, "slug");
 
-    if (slug != NULL || (ctx->files != NULL && ctx->files->next == NULL)) {
+    if (slug != NULL ^ (ctx->files != NULL && ctx->files->next == NULL)) {
         bluster_gist_file_t *file = NULL;
-        if (ctx->files != NULL && ctx->files->next == NULL)
+        if (ctx->files != NULL && ctx->files->next == NULL) {
             file = ctx->files->data;
+        }
         else {
             for (GSList *tmp = ctx->files; tmp != NULL; tmp = tmp->next) {
                 bluster_gist_file_t *tmp_file = tmp->data;
@@ -64,19 +65,22 @@ main_view(balde_app_t *app, balde_request_t *request)
         balde_template_footer(app, request, response);
         return response;
     }
-    balde_response_t* response = create_response();
-    balde_response_set_tmpl_var(response, "title", ctx->headline);
-    balde_template_header(app, request, response);
-    balde_template_list_header(app, request, response);
-    for (GSList *tmp = ctx->files; tmp != NULL; tmp = tmp->next) {
-        bluster_gist_file_t *tmp_file = tmp->data;
-        balde_response_set_tmpl_var(response, "slug", tmp_file->slug);
-        balde_response_set_tmpl_var(response, "link_title", tmp_file->title);
-        balde_template_list_item(app, request, response);
+    else if (slug == NULL) {
+        balde_response_t* response = create_response();
+        balde_response_set_tmpl_var(response, "title", ctx->headline);
+        balde_template_header(app, request, response);
+        balde_template_list_header(app, request, response);
+        for (GSList *tmp = ctx->files; tmp != NULL; tmp = tmp->next) {
+            bluster_gist_file_t *tmp_file = tmp->data;
+            balde_response_set_tmpl_var(response, "slug", tmp_file->slug);
+            balde_response_set_tmpl_var(response, "link_title", tmp_file->title);
+            balde_template_list_item(app, request, response);
+        }
+        balde_template_list_footer(app, request, response);
+        balde_template_footer(app, request, response);
+        return response;
     }
-    balde_template_list_footer(app, request, response);
-    balde_template_footer(app, request, response);
-    return response;
+    return balde_abort(app, 404);
 }
 
 
