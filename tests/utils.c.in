@@ -1,5 +1,5 @@
 /*
- * bluster: A web app to publish single-page blusters written in markdown using
+ * bluster: A web app to publish rants written in markdown using GitHub Gists.
  *       GitHub Gists.
  * Copyright (C) 2014 Rafael G. Martins <rafael@rafaelmartins.eng.br>
  *
