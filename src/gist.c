@@ -16,6 +16,8 @@
 
 #include "requests.h"
 #include "gist.h"
+#include "helpers.h"
+#include "markdown.h"
 
 
 bluster_gist_ctx_t*
@@ -75,9 +77,18 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         json_reader_end_element(reader);
         json_reader_end_element(reader);
 
+        gchar *slug = bluster_get_slug(files[i]);
+        if (slug == NULL)
+            continue;
+
+        gchar *title = bluster_get_title(content);
+
         bluster_gist_file_t *file = g_new(bluster_gist_file_t, 1);
         file->name = g_strdup(files[i]);
+        file->slug = slug;
+        file->title = title;
         file->content = content;
+        file->parsed_content = bluster_parse_markdown(content);
         file_list = g_slist_append(file_list, file);
     }
 

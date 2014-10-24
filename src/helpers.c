@@ -92,10 +92,3 @@ bluster_get_slug(const gchar *filename)
     g_regex_unref(re_slug);
     return rv;
 }
-
-
-gchar*
-balde_tmpl_title(balde_app_t *app, balde_request_t *request, const gchar *content)
-{
-    return bluster_get_title(content);
-}

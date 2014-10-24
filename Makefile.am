@@ -7,13 +7,19 @@ EXTRA_DIST = \
 	.version \
 	build-aux/git-version-gen \
 	README.md \
-	src/templates/base.html \
+	src/templates/header.html \
+	src/templates/footer.html \
+	src/templates/list-header.html \
+	src/templates/list-footer.html \
+	src/templates/list-item.html \
 	src/static/resources.xml \
 	src/static/screen.css \
 	tests/fixtures/gist.json \
-	tests/fixtures/gist-truncated.json
+	tests/fixtures/gist-truncated.json \
+	tests/fixtures/gist-multiple-files.json
 
-CLEANFILES =
+CLEANFILES = \
+	tests/utils.c
 
 BUILT_SOURCES = \
 	.version
@@ -26,6 +32,7 @@ noinst_HEADERS = \
 	src/gist.h \
 	src/helpers.h \
 	src/free.h \
+	src/markdown.h \
 	tests/utils.h
 
 bin_PROGRAMS = \
@@ -34,7 +41,8 @@ bin_PROGRAMS = \
 check_PROGRAMS = \
 	tests/check_requests \
 	tests/check_gist \
-	tests/check_helpers
+	tests/check_helpers \
+	tests/check_markdown
 
 TESTS = \
 	$(check_PROGRAMS)
@@ -46,7 +54,8 @@ libbluster_la_SOURCES = \
 	src/requests.c \
 	src/gist.c \
 	src/helpers.c \
-	src/free.c
+	src/free.c \
+	src/markdown.c
 
 libbluster_la_CFLAGS = \
 	$(BALDE_CFLAGS) \
@@ -78,8 +87,16 @@ bluster_SOURCES = \
 	src/main.c
 
 nodist_bluster_SOURCES = \
-	src/templates/base.c \
-	src/templates/base.h \
+	src/templates/header.c \
+	src/templates/header.h \
+	src/templates/footer.c \
+	src/templates/footer.h \
+	src/templates/list-header.c \
+	src/templates/list-header.h \
+	src/templates/list-footer.c \
+	src/templates/list-footer.h \
+	src/templates/list-item.c \
+	src/templates/list-item.h \
 	src/static/resources.c \
 	src/static/resources.h
 
@@ -160,6 +177,24 @@ tests_check_helpers_LDADD = \
 	$(LIBCURL_LIBS) \
 	$(JSON_GLIB_LIBS)
 
+tests_check_markdown_SOURCES = \
+	tests/check_markdown.c
+
+tests_check_markdown_CFLAGS = \
+	$(BALDE_CFLAGS) \
+	$(LIBCURL_CFLAGS) \
+	$(JSON_GLIB_CFLAGS) \
+	-I$(top_srcdir)/src
+
+tests_check_markdown_LDFLAGS = \
+	-no-install
+
+tests_check_markdown_LDADD = \
+	libbluster.la \
+	$(BALDE_LIBS) \
+	$(LIBCURL_LIBS) \
+	$(JSON_GLIB_LIBS)
+
 
 ## Helpers: Local clean
 
@@ -207,3 +242,4 @@ endif
 
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
+	rm -f $(distdir)/tests/utils.c

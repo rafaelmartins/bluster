@@ -26,7 +26,7 @@
   },
   "user": null,
   "files": {
-    "ring.erl": {
+    "001_ring.mkd": {
       "size": 932,
       "raw_url": "https://gist.githubusercontent.com/raw/365370/8c4d2d43d178df44f4c03a7f2ac0ff512853564e/ring.erl",
       "type": "text/plain",
@@ -34,7 +34,7 @@
       "truncated": false,
       "content": "contents of gist"
     },
-    "sing.erl": {
+    "002_sing.mkd": {
       "size": 932,
       "raw_url": "https://gist.githubusercontent.com/raw/365370/8c4d2d43d178df44f4c03a7f2ac0ff512853564e/sing.erl",
       "type": "text/plain",
@@ -42,7 +42,7 @@
       "truncated": false,
       "content": "contents of hist"
     },
-    "ting.erl": {
+    "003_ting.mkd": {
       "size": 932,
       "raw_url": "https://gist.githubusercontent.com/raw/365370/8c4d2d43d178df44f4c03a7f2ac0ff512853564e/ting.erl",
       "type": "text/plain",

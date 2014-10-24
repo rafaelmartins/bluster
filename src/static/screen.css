@@ -41,6 +41,18 @@ a:hover {
     text-align: justify;
 }
 
+#list ul, #list li {
+    list-style: none;
+}
+
+#list li {
+    margin-bottom: 20px;
+}
+
+#list a {
+    font-size: 26px;
+}
+
 footer {
     margin-top: 80px;
     text-align: center;

@@ -7,14 +7,11 @@
  * See the file COPYING.
  */
 
-#ifndef _BLUSTER_HELPERS_H
-#define _BLUSTER_HELPERS_H
+#ifndef _BLUSTER_MARKDOWN_H
+#define _BLUSTER_MARKDOWN_H
 
-#include <balde.h>
-#include "gist.h"
+#include <glib.h>
 
-bluster_gist_ctx_t* bluster_get_gist_ctx(balde_app_t *app);
-gchar* bluster_get_title(const gchar *content);
-gchar* bluster_get_slug(const gchar *filename);
+gchar* bluster_parse_markdown(const gchar *source);
 
 #endif

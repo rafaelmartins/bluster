@@ -18,6 +18,10 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
   AC_MSG_ERROR([no C99 compiler found, bluster requires a C99 compiler.])
 ])
 
+AC_SEARCH_LIBS([mkd_string], [markdown], ,
+  AC_MSG_ERROR([mkd_string not found. please install the discount markdown parser library.])
+)
+
 AC_ARG_WITH([valgrind], AS_HELP_STRING([--without-valgrind],
             [ignore presence of valgrind]))
 AS_IF([test "x$with_valgrind" != "xno"], [
@@ -38,7 +42,7 @@ VALGRIND="$ac_cv_path_valgrind"
 AC_SUBST(VALGRIND)
 
 PKG_PROG_PKG_CONFIG
-PKG_CHECK_MODULES([BALDE], [balde > 0.1.2, balde-markdown >= 0.1])
+PKG_CHECK_MODULES([BALDE], [balde > 0.1.2])
 PKG_CHECK_MODULES([LIBCURL], [libcurl])
 PKG_CHECK_MODULES([JSON_GLIB], [json-glib-1.0 >= 0.16.2])
 

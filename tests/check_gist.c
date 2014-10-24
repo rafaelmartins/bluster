@@ -40,8 +40,9 @@ test_fetch_gist(void)
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "description of gist");
     bluster_gist_file_t *file = ctx->files->data;
-    g_assert_cmpstr(file->name, ==, "ring.erl");
+    g_assert_cmpstr(file->name, ==, "001_ring.mkd");
     g_assert_cmpstr(file->content, ==, "contents of gist");
+    g_assert_cmpstr(file->slug, ==, "ring");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d462f");
     g_assert(ctx->datetime != NULL);
@@ -65,8 +66,9 @@ test_fetch_gist_truncated(void)
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "description of gist");
     bluster_gist_file_t *file = ctx->files->data;
-    g_assert_cmpstr(file->name, ==, "ring.erl");
+    g_assert_cmpstr(file->name, ==, "001_ring.mkd");
     g_assert_cmpstr(file->content, ==, "bola");
+    g_assert_cmpstr(file->slug, ==, "ring");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "57a7f021a713b1c5a6a199b54cc514735d2d461e");
     g_assert(ctx->datetime != NULL);
@@ -116,17 +118,17 @@ test_fetch_gist_multiple_files(void)
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "description of gist");
     bluster_gist_file_t *file = ctx->files->data;
-    g_assert_cmpstr(file->name, ==, "ring.erl");
+    g_assert_cmpstr(file->name, ==, "001_ring.mkd");
     g_assert_cmpstr(file->content, ==, "contents of gist");
 
     g_assert(ctx->files->next != NULL);
     file = ctx->files->next->data;
-    g_assert_cmpstr(file->name, ==, "sing.erl");
+    g_assert_cmpstr(file->name, ==, "002_sing.mkd");
     g_assert_cmpstr(file->content, ==, "contents of hist");
 
     g_assert(ctx->files->next->next != NULL);
     file = ctx->files->next->next->data;
-    g_assert_cmpstr(file->name, ==, "ting.erl");
+    g_assert_cmpstr(file->name, ==, "003_ting.mkd");
     g_assert_cmpstr(file->content, ==, "contents of iist");
 
     g_assert(ctx->files->next->next->next == NULL);

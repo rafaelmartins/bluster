@@ -17,7 +17,10 @@
 #include "../src/free.h"
 
 gchar *name = NULL;
+gchar *title = NULL;
 gchar *content = NULL;
+gchar *parsed_content = NULL;
+gchar *slug = NULL;
 gchar *headline = NULL;
 gchar *commit = NULL;
 gint64 unix_utc = -1;
@@ -30,7 +33,10 @@ void
 test_get_gist_ctx_reload(void)
 {
     name = "bola.txt";
-    content = "bola";
+    title = "my title";
+    content = "bolac";
+    parsed_content = "parsed content";
+    slug = "bola";
     headline = "head";
     commit = "guda";
     unix_utc = -1;
@@ -44,7 +50,8 @@ test_get_gist_ctx_reload(void)
     g_assert(ctx->files != NULL);
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "bola.txt");
-    g_assert_cmpstr(file->content, ==, "bola");
+    g_assert_cmpstr(file->content, ==, "bolac");
+    g_assert_cmpstr(file->slug, ==, "bola");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
     g_assert(ctx->datetime != NULL);
@@ -59,7 +66,10 @@ void
 test_get_gist_ctx_reload_with_old_ctx(void)
 {
     name = "bola.txt";
-    content = "bola";
+    title = "my title";
+    content = "bolac";
+    parsed_content = "<p>parsed content</p>";
+    slug = "bola";
     headline = "head";
     commit = "guda";
     unix_utc = -1;
@@ -72,7 +82,10 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
     f->name = g_strdup("bola.txt");
+    f->title = g_strdup("my old title");
     f->content = g_strdup("chunda");
+    f->parsed_content = g_strdup("<p>chunda</p>");
+    f->slug = g_strdup("bola");
 
     old_ctx->files = g_slist_append(old_ctx->files, f);
     old_ctx->commit = g_strdup("arcoiro");
@@ -88,7 +101,10 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     g_assert_cmpstr(ctx->headline, ==, "head");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "bola.txt");
-    g_assert_cmpstr(file->content, ==, "bola");
+    g_assert_cmpstr(file->title, ==, "my title");
+    g_assert_cmpstr(file->content, ==, "bolac");
+    g_assert_cmpstr(file->parsed_content, ==, "<p>parsed content</p>");
+    g_assert_cmpstr(file->slug, ==, "bola");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
     g_assert(ctx->datetime != NULL);
@@ -104,7 +120,10 @@ void
 test_get_gist_ctx_no_reload(void)
 {
     name = "bola.txt";
-    content = "bola";
+    title = "my title";
+    content = "bolac";
+    parsed_content = "<p>parsed content</p>";
+    slug = "bola";
     headline = "head";
     commit = "guda";
     unix_utc = -1;
@@ -117,7 +136,10 @@ test_get_gist_ctx_no_reload(void)
 
     bluster_gist_file_t *f = g_new(bluster_gist_file_t, 1);
     f->name = g_strdup("bola.txt");
+    f->title = g_strdup("my old title");
     f->content = g_strdup("chunda");
+    f->parsed_content = g_strdup("<p>chunda</p>");
+    f->slug = g_strdup("bola");
 
     old_ctx->files = g_slist_append(old_ctx->files, f);
     old_ctx->commit = g_strdup("arcoiro");
@@ -132,7 +154,10 @@ test_get_gist_ctx_no_reload(void)
     g_assert_cmpstr(ctx->headline, ==, "head");
     bluster_gist_file_t *file = ctx->files->data;
     g_assert_cmpstr(file->name, ==, "bola.txt");
+    g_assert_cmpstr(file->title, ==, "my old title");
     g_assert_cmpstr(file->content, ==, "chunda");
+    g_assert_cmpstr(file->parsed_content, ==, "<p>chunda</p>");
+    g_assert_cmpstr(file->slug, ==, "bola");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "arcoiro");
     g_assert(ctx->datetime == NULL);

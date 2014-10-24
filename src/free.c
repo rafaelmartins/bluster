@@ -23,7 +23,10 @@ bluster_gist_file_free(bluster_gist_file_t *file)
     if (file == NULL)
         return;
     g_free(file->name);
+    g_free(file->slug);
+    g_free(file->title);
     g_free(file->content);
+    g_free(file->parsed_content);
     g_free(file);
 }
 

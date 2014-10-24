@@ -14,7 +14,10 @@
 
 typedef struct {
     gchar *name;
+    gchar *slug;
+    gchar *title;
     gchar *content;
+    gchar *parsed_content;
 } bluster_gist_file_t;
 
 typedef struct {
