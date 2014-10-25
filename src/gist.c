@@ -76,8 +76,10 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         if (truncated) {  // fetch from raw_url
             if (!json_reader_read_member(reader, "raw_url"))
                 goto point3;
-            GString *raw = bluster_fetch_url(json_reader_get_string_value(reader),
-                oauth_token, FALSE);
+            const gchar *raw_url = NULL;
+            if (!json_reader_get_null_value(reader))
+                raw_url = json_reader_get_string_value(reader);
+            GString *raw = bluster_fetch_url(raw_url, oauth_token, FALSE);
             if (raw == NULL)
                 goto point3;
             content = g_string_free(raw, FALSE);
@@ -85,7 +87,10 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
         else {
             if (!json_reader_read_member(reader, "content"))
                 goto point3;
-            content = g_strdup(json_reader_get_string_value(reader));
+            const gchar *tmp_content = NULL;
+            if (!json_reader_get_null_value(reader))
+                tmp_content = json_reader_get_string_value(reader);
+            content = g_strdup(tmp_content);
         }
 
         json_reader_end_member(reader);
@@ -111,7 +116,11 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
 
     if (!json_reader_read_member(reader, "description"))
         goto point3;
-    gchar *headline = g_strdup(json_reader_get_string_value(reader));
+
+    const gchar *tmp_headline = NULL;
+    if (!json_reader_get_null_value(reader))
+        tmp_headline = json_reader_get_string_value(reader);
+    gchar *headline = g_strdup(tmp_headline);
     json_reader_end_element(reader);
 
     if (!json_reader_read_member(reader, "history"))
@@ -121,10 +130,15 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
     if (!json_reader_read_member(reader, "version"))
         goto point3;
 
+    const gchar *tmp_commit = NULL;
+    if (!json_reader_get_null_value(reader))
+        tmp_commit = json_reader_get_string_value(reader);
+    gchar *commit = g_strdup(tmp_commit);
+
     ctx = g_new(bluster_gist_ctx_t, 1);
     ctx->headline = headline;
     ctx->files = file_list;
-    ctx->commit = g_strdup(json_reader_get_string_value(reader));
+    ctx->commit = commit;
     ctx->datetime = g_date_time_new_now_utc();
 
 point3:
