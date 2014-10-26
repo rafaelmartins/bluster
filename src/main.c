@@ -14,6 +14,7 @@
 #include <glib.h>
 
 #include "helpers.h"
+#include "free.h"
 #include "static/resources.h"
 #include "templates/header.h"
 #include "templates/footer.h"
@@ -94,6 +95,7 @@ main(int argc, char **argv)
     balde_app_set_config_from_envvar(app, "gist_id", "BLUSTER_GIST_ID", FALSE);
     balde_app_set_config_from_envvar(app, "gist_ttl", "BLUSTER_GIST_TTL", TRUE);
     balde_app_run(app, argc, argv);
+    bluster_gist_ctx_free(app->user_data);
     balde_app_free(app);
     return 0;
 }
