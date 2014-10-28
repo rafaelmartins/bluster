@@ -67,7 +67,7 @@ libbluster_la_CFLAGS = \
 libbluster_la_LIBADD = \
 	$(BALDE_LIBS) \
 	$(LIBCURL_LIBS) \
-	$(JSON_GLIB_CFLAGS)
+	$(JSON_GLIB_LIBS)
 
 src/templates/%.c: src/templates/%.html
 	$(AM_V_GEN)$(BALDE_TEMPLATE_GEN) $< $@
