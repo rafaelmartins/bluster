@@ -11,6 +11,11 @@
 
 #include <glib.h>
 
-gchar* bluster_parse_markdown(const gchar *source);
+typedef struct {
+    gchar *css;
+    gchar *content;
+} bluster_markdown_t;
+
+bluster_markdown_t* bluster_parse_markdown(const gchar *source);
 
 #endif

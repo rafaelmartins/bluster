@@ -14,6 +14,18 @@
 
 #include "free.h"
 #include "gist.h"
+#include "markdown.h"
+
+
+void
+bluster_markdown_free(bluster_markdown_t *mkd)
+{
+    if (mkd == NULL)
+        return;
+    g_free(mkd->content);
+    g_free(mkd->css);
+    g_free(mkd);
+}
 
 
 void
@@ -25,7 +37,7 @@ bluster_gist_file_free(bluster_gist_file_t *file)
     g_free(file->slug);
     g_free(file->title);
     g_free(file->content);
-    g_free(file->parsed_content);
+    bluster_markdown_free(file->parsed_content);
     g_free(file);
 }
 

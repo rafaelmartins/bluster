@@ -19,6 +19,7 @@ gchar *name = NULL;
 gchar *title = NULL;
 gchar *content = NULL;
 gchar *parsed_content = NULL;
+gchar *parsed_content_css = NULL;
 gchar *slug = NULL;
 gchar *headline = NULL;
 gchar *commit = NULL;
@@ -35,6 +36,7 @@ test_get_gist_ctx_reload(void)
     title = "my title";
     content = "bolac";
     parsed_content = "parsed content";
+    parsed_content_css = "my css";
     slug = "bola";
     headline = "head";
     commit = "guda";
@@ -68,6 +70,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     title = "my title";
     content = "bolac";
     parsed_content = "<p>parsed content</p>";
+    parsed_content_css = "my css";
     slug = "bola";
     headline = "head";
     commit = "guda";
@@ -83,7 +86,9 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     f->name = g_strdup("bola.md");
     f->title = g_strdup("my old title");
     f->content = g_strdup("chunda");
-    f->parsed_content = g_strdup("<p>chunda</p>");
+    f->parsed_content = g_new(bluster_markdown_t, 1);
+    f->parsed_content->content = g_strdup("<p>chunda</p>");
+    f->parsed_content->css = NULL;
     f->slug = g_strdup("bola");
 
     old_ctx->files = g_slist_append(old_ctx->files, f);
@@ -102,7 +107,8 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     g_assert_cmpstr(file->name, ==, "bola.md");
     g_assert_cmpstr(file->title, ==, "my title");
     g_assert_cmpstr(file->content, ==, "bolac");
-    g_assert_cmpstr(file->parsed_content, ==, "<p>parsed content</p>");
+    g_assert_cmpstr(file->parsed_content->content, ==, "<p>parsed content</p>");
+    g_assert_cmpstr(file->parsed_content->css, ==, "my css");
     g_assert_cmpstr(file->slug, ==, "bola");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
@@ -122,6 +128,7 @@ test_get_gist_ctx_no_reload(void)
     title = "my title";
     content = "bolac";
     parsed_content = "<p>parsed content</p>";
+    parsed_content_css = "my css";
     slug = "bola";
     headline = "head";
     commit = "guda";
@@ -137,7 +144,9 @@ test_get_gist_ctx_no_reload(void)
     f->name = g_strdup("bola.md");
     f->title = g_strdup("my old title");
     f->content = g_strdup("chunda");
-    f->parsed_content = g_strdup("<p>chunda</p>");
+    f->parsed_content = g_new(bluster_markdown_t, 1);
+    f->parsed_content->content = g_strdup("<p>chunda</p>");
+    f->parsed_content->css = NULL;
     f->slug = g_strdup("bola");
 
     old_ctx->files = g_slist_append(old_ctx->files, f);
@@ -155,7 +164,8 @@ test_get_gist_ctx_no_reload(void)
     g_assert_cmpstr(file->name, ==, "bola.md");
     g_assert_cmpstr(file->title, ==, "my old title");
     g_assert_cmpstr(file->content, ==, "chunda");
-    g_assert_cmpstr(file->parsed_content, ==, "<p>chunda</p>");
+    g_assert_cmpstr(file->parsed_content->content, ==, "<p>chunda</p>");
+    g_assert(file->parsed_content->css == NULL);
     g_assert_cmpstr(file->slug, ==, "bola");
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "arcoiro");

@@ -11,12 +11,14 @@
 
 #include <glib.h>
 
+#include "markdown.h"
+
 typedef struct {
     gchar *name;
     gchar *slug;
     gchar *title;
     gchar *content;
-    gchar *parsed_content;
+    bluster_markdown_t *parsed_content;
 } bluster_gist_file_t;
 
 typedef struct {

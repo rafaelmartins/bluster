@@ -11,6 +11,7 @@
 
 #include "gist.h"
 
+void bluster_markdown_free(bluster_markdown_t *mkd);
 void bluster_gist_file_free(bluster_gist_file_t *file);
 void bluster_gist_ctx_free(bluster_gist_ctx_t *ctx);
 

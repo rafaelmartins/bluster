@@ -60,13 +60,16 @@ main_view(balde_app_t *app, balde_request_t *request)
             return balde_abort(app, 404);
         balde_response_t* response = create_response();
         balde_response_set_tmpl_var(response, "title", file->title);
+        balde_response_set_tmpl_var(response, "css",
+            file->parsed_content->css == NULL ? "" : file->parsed_content->css);
         balde_template_header(app, request, response);
-        balde_response_append_body(response, file->parsed_content);
+        balde_response_append_body(response, file->parsed_content->content);
         balde_template_footer(app, request, response);
         return response;
     }
     if (slug == NULL) {
         balde_response_t* response = create_response();
+        balde_response_set_tmpl_var(response, "css", "");
         balde_response_set_tmpl_var(response, "title", ctx->headline);
         balde_template_header(app, request, response);
         balde_template_list_header(app, request, response);

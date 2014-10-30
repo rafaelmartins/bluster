@@ -19,20 +19,23 @@
 
 G_LOCK_DEFINE_STATIC(mkd);
 
-gchar*
+bluster_markdown_t*
 bluster_parse_markdown(const gchar *source)
 {
     if (source == NULL)
         return NULL;
-    gchar *rv = NULL;
-    gchar *text;
+    bluster_markdown_t *rv = NULL;
+    gchar *buffer;
     G_LOCK(mkd);
     MMIOT *doc = mkd_string(source, strlen(source), MKD_TABSTOP);
     if (doc == NULL)
         goto point0;
     mkd_compile(doc, MKD_TABSTOP);
-    mkd_document(doc, &text);
-    rv = g_strdup(text);
+    mkd_document(doc, &buffer);
+    rv = g_new(bluster_markdown_t, 1);
+    rv->content = g_strdup(buffer);
+    mkd_css(doc, &buffer);
+    rv->css = g_strdup(buffer);
 point0:
     mkd_cleanup(doc);
     G_UNLOCK(mkd);

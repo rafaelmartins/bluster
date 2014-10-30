@@ -13,12 +13,14 @@
 #include <glib.h>
 
 #include "../src/gist.h"
+#include "../src/markdown.h"
 
 // this thing isn't thread safe, bla, bla, bla, but this is just a test :)
 extern gchar *name;
 extern gchar *title;
 extern gchar *content;
 extern gchar *parsed_content;
+extern gchar *parsed_content_css;
 extern gchar *slug;
 extern gchar *headline;
 extern gchar *commit;
@@ -43,7 +45,9 @@ bluster_fetch_gist(const gchar *gist_id, const gchar *oauth_token)
     f->name = g_strdup(name);
     f->title = g_strdup(title);
     f->content = g_strdup(content);
-    f->parsed_content = g_strdup(parsed_content);
+    f->parsed_content = g_new(bluster_markdown_t, 1);
+    f->parsed_content->content = g_strdup(parsed_content);
+    f->parsed_content->css = g_strdup(parsed_content_css);
     f->slug = g_strdup(slug);
     ctx->files = g_slist_append(ctx->files, f);
     ctx->commit = g_strdup(commit);
