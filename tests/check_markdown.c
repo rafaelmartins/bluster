@@ -13,6 +13,7 @@
 #include <glib.h>
 
 #include "../src/markdown.h"
+#include "../src/free.h"
 
 
 void
