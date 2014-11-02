@@ -24,11 +24,17 @@
 
 
 static balde_response_t*
-create_response(void)
+create_response(bluster_gist_ctx_t *ctx)
 {
     balde_response_t* response = balde_make_response("");
     balde_response_set_header(response, "x-powered-by", PACKAGE_STRING);
     balde_response_set_tmpl_var(response, "bluster_url", PACKAGE_URL);
+
+    gchar *gist_datetime = g_date_time_format(ctx->datetime,
+        "%Y-%m-%d %H:%I:%S GMT");
+    balde_response_set_tmpl_var(response, "gist_datetime", gist_datetime);
+    g_free(gist_datetime);
+
     return response;
 }
 
@@ -58,7 +64,7 @@ main_view(balde_app_t *app, balde_request_t *request)
         }
         if (file == NULL)
             return balde_abort(app, 404);
-        balde_response_t* response = create_response();
+        balde_response_t* response = create_response(ctx);
         balde_response_set_tmpl_var(response, "title", file->title);
         balde_response_set_tmpl_var(response, "css",
             file->parsed_content->css == NULL ? "" : file->parsed_content->css);
@@ -68,7 +74,7 @@ main_view(balde_app_t *app, balde_request_t *request)
         return response;
     }
     if (slug == NULL) {
-        balde_response_t* response = create_response();
+        balde_response_t* response = create_response(ctx);
         balde_response_set_tmpl_var(response, "css", "");
         balde_response_set_tmpl_var(response, "title", ctx->headline);
         balde_template_header(app, request, response);
