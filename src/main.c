@@ -31,7 +31,7 @@ create_response(bluster_gist_ctx_t *ctx)
     balde_response_set_tmpl_var(response, "bluster_url", PACKAGE_URL);
 
     gchar *gist_datetime = g_date_time_format(ctx->datetime,
-        "%Y-%m-%d %H:%I:%S GMT");
+        "%Y-%m-%d %H:%M:%S GMT");
     balde_response_set_tmpl_var(response, "gist_datetime", gist_datetime);
     g_free(gist_datetime);
 
