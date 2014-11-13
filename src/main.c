@@ -65,11 +65,23 @@ main_view(balde_app_t *app, balde_request_t *request)
         if (file == NULL)
             return balde_abort(app, 404);
         balde_response_t* response = create_response(ctx);
-        balde_response_set_tmpl_var(response, "title", file->title);
         balde_response_set_tmpl_var(response, "css",
             file->parsed_content->css == NULL ? "" : file->parsed_content->css);
+        gchar *content;
+        gchar *title;
+        if (file->title != NULL) {
+            title = file->title;
+            content = g_strdup(file->parsed_content->content);
+        }
+        else {
+            title = ctx->headline;
+            content = g_strdup_printf("<h1>%s</h1>\n%s", ctx->headline,
+                file->parsed_content->content);
+        }
+        balde_response_set_tmpl_var(response, "title", title);
         balde_template_header(app, request, response);
-        balde_response_append_body(response, file->parsed_content->content);
+        balde_response_append_body(response, content);
+        g_free(content);
         balde_template_footer(app, request, response);
         return response;
     }
