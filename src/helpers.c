@@ -52,11 +52,16 @@ bluster_get_title(const gchar *content)
     gchar *tmp = content_;
     guint offset = 0;
     gboolean start = TRUE;
-    gchar *rv;
+    gboolean hash_title = FALSE;
+    gboolean my_break = FALSE;
+    gchar ruler = 0;
+    gchar *rv = NULL;
     for (guint i = 0; content[i] != '\0'; i++) {
         switch (content[i]) {
-            case ' ':
             case '#':
+                if (start)
+                    hash_title = TRUE;
+            case ' ':
                 if (start) {
                     tmp++;
                     offset++;
@@ -64,14 +69,25 @@ bluster_get_title(const gchar *content)
                 break;
             case '\n':
             case '\r':
+                ruler = content[i + 1];
+                if (ruler == '\n' || ruler == '\r')
+                    ruler = content[i + 2];
                 rv = g_strndup(tmp, i - offset);
-                g_free(content_);
-                return rv;
+                my_break = TRUE;
             default:
                 start = FALSE;
         }
+        if (my_break)
+            break;
     }
-    rv = g_strdup(tmp);
+    if (rv != NULL) {
+        if (!hash_title && (ruler == '\0' || (ruler != '=' && ruler != '-'))) {
+            g_free(rv);
+            rv = NULL;
+        }
+    }
+    else if (hash_title || ruler != '\0')
+        rv = g_strdup(tmp);
     g_free(content_);
     return rv;
 }

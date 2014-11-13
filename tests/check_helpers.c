@@ -181,15 +181,39 @@ test_get_gist_ctx_no_reload(void)
 void
 test_get_title(void)
 {
-    gchar *title = bluster_get_title("asdqwe\nzxcvbn");
+    gchar *title = bluster_get_title("asdqwe\n=====");
     g_assert_cmpstr(title, ==, "asdqwe");
     g_free(title);
-    title = bluster_get_title("poilkj\rzxc");
+    title = bluster_get_title("poilkj\r====");
     g_assert_cmpstr(title, ==, "poilkj");
     g_free(title);
-    title = bluster_get_title("poilkjzxc");
+    title = bluster_get_title("poilkjzxc\r\n====");
     g_assert_cmpstr(title, ==, "poilkjzxc");
     g_free(title);
+
+    title = bluster_get_title("asdqwe\n-----");
+    g_assert_cmpstr(title, ==, "asdqwe");
+    g_free(title);
+    title = bluster_get_title("poilkj\r-----");
+    g_assert_cmpstr(title, ==, "poilkj");
+    g_free(title);
+    title = bluster_get_title("poilkjzxc\r\n-----");
+    g_assert_cmpstr(title, ==, "poilkjzxc");
+    g_free(title);
+
+    g_assert(bluster_get_title("asdqwe\nzxcvbn") == NULL);
+    g_assert(bluster_get_title("poilkj\rzxc") == NULL);
+    g_assert(bluster_get_title("poilkjzxc") == NULL);
+    g_assert(bluster_get_title("asdqwe\nzxcvbn\n") == NULL);
+    g_assert(bluster_get_title("poilkj\rzxc\n") == NULL);
+    g_assert(bluster_get_title("poilkjzxc\n") == NULL);
+    g_assert(bluster_get_title("asdqwe\nzxcvbn\r") == NULL);
+    g_assert(bluster_get_title("poilkj\rzxc\r") == NULL);
+    g_assert(bluster_get_title("poilkjzxc\r") == NULL);
+    g_assert(bluster_get_title("asdqwe\nzxcvbn\r\n") == NULL);
+    g_assert(bluster_get_title("poilkj\rzxc\r\n") == NULL);
+    g_assert(bluster_get_title("poilkjzxc\r\n") == NULL);
+
     title = bluster_get_title("# poilkj\nzxc");
     g_assert_cmpstr(title, ==, "poilkj");
     g_free(title);
