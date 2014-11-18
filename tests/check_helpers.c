@@ -30,7 +30,7 @@ gdouble expected_ttl = 5.0;
 
 
 void
-test_get_gist_ctx_reload(void)
+test_before_request_ctx_reload(void)
 {
     name = "bola.md";
     title = "my title";
@@ -66,7 +66,7 @@ test_get_gist_ctx_reload(void)
 
 
 void
-test_get_gist_ctx_reload_with_old_ctx(void)
+test_before_request_ctx_reload_with_old_ctx(void)
 {
     name = "bola.md";
     title = "my title";
@@ -126,7 +126,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 
 
 void
-test_get_gist_ctx_no_reload(void)
+test_before_request_ctx_no_reload(void)
 {
     name = "bola.md";
     title = "my title";
@@ -315,11 +315,12 @@ int
 main(int argc, char** argv)
 {
     g_test_init(&argc, &argv, NULL);
-    g_test_add_func("/helpers/get_gist_ctx_reload", test_get_gist_ctx_reload);
-    g_test_add_func("/helpers/get_gist_ctx_reload_with_old_ctx",
-        test_get_gist_ctx_reload_with_old_ctx);
-    g_test_add_func("/helpers/get_gist_ctx_no_reload",
-        test_get_gist_ctx_no_reload);
+    g_test_add_func("/helpers/before_request_ctx_reload",
+        test_before_request_ctx_reload);
+    g_test_add_func("/helpers/before_request_ctx_reload_with_old_ctx",
+        test_before_request_ctx_reload_with_old_ctx);
+    g_test_add_func("/helpers/before_request_ctx_no_reload",
+        test_before_request_ctx_no_reload);
     g_test_add_func("/helpers/get_title", test_get_title);
     g_test_add_func("/helpers/get_slug", test_get_slug);
     return g_test_run();
