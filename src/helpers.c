@@ -20,8 +20,8 @@
 
 G_LOCK_DEFINE_STATIC(ctx);
 
-bluster_gist_ctx_t*
-bluster_get_gist_ctx(balde_app_t *app)
+void
+bluster_before_request(balde_app_t *app, balde_request_t *request)
 {
     const gchar *gist_id = balde_app_get_config(app, "gist_id");
     const gchar *gist_ttl = balde_app_get_config(app, "gist_ttl");
@@ -34,14 +34,13 @@ bluster_get_gist_ctx(balde_app_t *app)
                 "Invalid value of gist TTL");
     }
     G_LOCK(ctx);
-    bluster_gist_ctx_t *ctx = (bluster_gist_ctx_t*) app->user_data;
+    bluster_gist_ctx_t *ctx = balde_app_get_user_data(app);
     if (bluster_gist_ctx_needs_reload(ctx, ttl)) {
         bluster_gist_ctx_t *new_ctx = bluster_fetch_gist(gist_id, oauth_token);
         bluster_gist_ctx_free(ctx);
-        app->user_data = new_ctx;
+        balde_app_set_user_data(app, new_ctx);
     }
     G_UNLOCK(ctx);
-    return (bluster_gist_ctx_t*) app->user_data;
 }
 
 

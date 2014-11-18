@@ -46,7 +46,9 @@ test_get_gist_ctx_reload(void)
 
     balde_app_t *app = balde_app_init();
 
-    bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
+    bluster_before_request(app, NULL);
+
+    bluster_gist_ctx_t *ctx = balde_app_get_user_data(app);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
     bluster_gist_file_t *file = ctx->files->data;
@@ -56,7 +58,7 @@ test_get_gist_ctx_reload(void)
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
     g_assert(ctx->datetime != NULL);
-    g_assert(ctx == app->user_data);
+    g_assert(ctx == balde_app_get_user_data(app));
 
     bluster_gist_ctx_free(ctx);
     balde_app_free(app);
@@ -97,9 +99,11 @@ test_get_gist_ctx_reload_with_old_ctx(void)
 
     balde_app_t *app = balde_app_init();
     balde_app_set_config(app, "gist_ttl", "10");
-    app->user_data = old_ctx;
+    balde_app_set_user_data(app, old_ctx);
 
-    bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
+    bluster_before_request(app, NULL);
+
+    bluster_gist_ctx_t *ctx = balde_app_get_user_data(app);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "head");
@@ -113,7 +117,7 @@ test_get_gist_ctx_reload_with_old_ctx(void)
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "guda");
     g_assert(ctx->datetime != NULL);
-    g_assert(ctx == app->user_data);
+    g_assert(ctx == balde_app_get_user_data(app));
     g_assert(ctx != old_ctx);
 
     bluster_gist_ctx_free(ctx);
@@ -154,9 +158,11 @@ test_get_gist_ctx_no_reload(void)
     old_ctx->datetime = NULL;
 
     balde_app_t *app = balde_app_init();
-    app->user_data = old_ctx;
+    balde_app_set_user_data(app, old_ctx);
 
-    bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
+    bluster_before_request(app, NULL);
+
+    bluster_gist_ctx_t *ctx = balde_app_get_user_data(app);
     g_assert(ctx != NULL);
     g_assert(ctx->files != NULL);
     g_assert_cmpstr(ctx->headline, ==, "head");
@@ -170,7 +176,7 @@ test_get_gist_ctx_no_reload(void)
     g_assert(ctx->files->next == NULL);
     g_assert_cmpstr(ctx->commit, ==, "arcoiro");
     g_assert(ctx->datetime == NULL);
-    g_assert(ctx == app->user_data);
+    g_assert(ctx == balde_app_get_user_data(app));
     g_assert(ctx == old_ctx);
 
     bluster_gist_ctx_free(ctx);

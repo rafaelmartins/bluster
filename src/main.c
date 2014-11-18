@@ -42,7 +42,7 @@ create_response(bluster_gist_ctx_t *ctx)
 static balde_response_t*
 main_view(balde_app_t *app, balde_request_t *request)
 {
-    bluster_gist_ctx_t *ctx = bluster_get_gist_ctx(app);
+    bluster_gist_ctx_t *ctx = balde_app_get_user_data(app);
     if (ctx == NULL)
         return balde_abort(app, 404);
 
@@ -110,13 +110,14 @@ main(int argc, char **argv)
 {
     balde_app_t *app = balde_app_init();
     balde_resources_load(app, resources_get_resource());
+    balde_app_add_before_request(app, bluster_before_request);
     balde_app_add_url_rule(app, "main", "/", BALDE_HTTP_GET, main_view);
     balde_app_add_url_rule(app, "content", "/<slug>/", BALDE_HTTP_GET, main_view);
     balde_app_set_config_from_envvar(app, "oauth_token", "BLUSTER_OAUTH_TOKEN", TRUE);
     balde_app_set_config_from_envvar(app, "gist_id", "BLUSTER_GIST_ID", FALSE);
     balde_app_set_config_from_envvar(app, "gist_ttl", "BLUSTER_GIST_TTL", TRUE);
     balde_app_run(app, argc, argv);
-    bluster_gist_ctx_free(app->user_data);
+    bluster_gist_ctx_free(balde_app_get_user_data(app));
     balde_app_free(app);
     return 0;
 }

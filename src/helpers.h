@@ -12,7 +12,7 @@
 #include <balde.h>
 #include "gist.h"
 
-bluster_gist_ctx_t* bluster_get_gist_ctx(balde_app_t *app);
+void bluster_before_request(balde_app_t *app, balde_request_t *request);
 gchar* bluster_get_title(const gchar *content);
 gchar* bluster_get_slug(const gchar *filename);
 
