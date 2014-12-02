@@ -110,6 +110,7 @@ main(int argc, char **argv)
 {
     balde_app_t *app = balde_app_init();
     balde_resources_load(app, resources_get_resource());
+    balde_app_set_user_data_destroy_func(app, (GDestroyNotify) bluster_gist_ctx_free);
     balde_app_add_before_request(app, bluster_before_request);
     balde_app_add_url_rule(app, "main", "/", BALDE_HTTP_GET, main_view);
     balde_app_add_url_rule(app, "content", "/<slug>/", BALDE_HTTP_GET, main_view);
@@ -117,7 +118,7 @@ main(int argc, char **argv)
     balde_app_set_config_from_envvar(app, "gist_id", "BLUSTER_GIST_ID", FALSE);
     balde_app_set_config_from_envvar(app, "gist_ttl", "BLUSTER_GIST_TTL", TRUE);
     balde_app_run(app, argc, argv);
-    bluster_gist_ctx_free(balde_app_get_user_data(app));
+    balde_app_free_user_data(app);
     balde_app_free(app);
     return 0;
 }

@@ -45,6 +45,7 @@ test_before_request_ctx_reload(void)
     expected_ttl = 5.0;
 
     balde_app_t *app = balde_app_init();
+    balde_app_set_user_data_destroy_func(app, (GDestroyNotify) bluster_gist_ctx_free);
 
     bluster_before_request(app, NULL);
 
@@ -60,7 +61,6 @@ test_before_request_ctx_reload(void)
     g_assert(ctx->datetime != NULL);
     g_assert(ctx == balde_app_get_user_data(app));
 
-    bluster_gist_ctx_free(ctx);
     balde_app_free(app);
 }
 
@@ -98,6 +98,7 @@ test_before_request_ctx_reload_with_old_ctx(void)
     old_ctx->datetime = NULL;
 
     balde_app_t *app = balde_app_init();
+    balde_app_set_user_data_destroy_func(app, (GDestroyNotify) bluster_gist_ctx_free);
     balde_app_set_config(app, "gist_ttl", "10");
     balde_app_set_user_data(app, old_ctx);
 
@@ -120,7 +121,6 @@ test_before_request_ctx_reload_with_old_ctx(void)
     g_assert(ctx == balde_app_get_user_data(app));
     g_assert(ctx != old_ctx);
 
-    bluster_gist_ctx_free(ctx);
     balde_app_free(app);
 }
 
@@ -158,6 +158,7 @@ test_before_request_ctx_no_reload(void)
     old_ctx->datetime = NULL;
 
     balde_app_t *app = balde_app_init();
+    balde_app_set_user_data_destroy_func(app, (GDestroyNotify) bluster_gist_ctx_free);
     balde_app_set_user_data(app, old_ctx);
 
     bluster_before_request(app, NULL);
@@ -179,7 +180,6 @@ test_before_request_ctx_no_reload(void)
     g_assert(ctx == balde_app_get_user_data(app));
     g_assert(ctx == old_ctx);
 
-    bluster_gist_ctx_free(ctx);
     balde_app_free(app);
 }
 
