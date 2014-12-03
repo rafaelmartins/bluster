@@ -118,7 +118,6 @@ main(int argc, char **argv)
     balde_app_set_config_from_envvar(app, "gist_id", "BLUSTER_GIST_ID", FALSE);
     balde_app_set_config_from_envvar(app, "gist_ttl", "BLUSTER_GIST_TTL", TRUE);
     balde_app_run(app, argc, argv);
-    balde_app_free_user_data(app);
     balde_app_free(app);
     return 0;
 }
