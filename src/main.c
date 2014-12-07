@@ -12,6 +12,7 @@
 
 #include <balde.h>
 #include <glib.h>
+#include <curl/curl.h>
 
 #include "helpers.h"
 #include "free.h"
@@ -108,6 +109,7 @@ main_view(balde_app_t *app, balde_request_t *request)
 int
 main(int argc, char **argv)
 {
+    curl_global_init(CURL_GLOBAL_ALL);
     balde_app_t *app = balde_app_init();
     balde_resources_load(app, resources_get_resource());
     balde_app_set_user_data_destroy_func(app, (GDestroyNotify) bluster_gist_ctx_free);
@@ -119,5 +121,6 @@ main(int argc, char **argv)
     balde_app_set_config_from_envvar(app, "gist_ttl", "BLUSTER_GIST_TTL", TRUE);
     balde_app_run(app, argc, argv);
     balde_app_free(app);
+    curl_global_cleanup();
     return 0;
 }
