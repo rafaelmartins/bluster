@@ -53,6 +53,8 @@ bluster_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_jso
     curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
     curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, bluster_curl_write_callback);
     curl_easy_setopt(hnd, CURLOPT_WRITEDATA, (void *) &rv);
+    curl_easy_setopt(hnd, CURLOPT_FRESH_CONNECT, 1L);
+    curl_easy_setopt(hnd, CURLOPT_FORBID_REUSE, 1L);
 
     if(curl_easy_perform(hnd) != CURLE_OK) {
         g_string_free(rv, TRUE);
