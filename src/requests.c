@@ -50,7 +50,6 @@ bluster_fetch_url(const gchar *url, const gchar *oauth_token, gboolean wants_jso
         PACKAGE_NAME "/" PACKAGE_VERSION " (See " PACKAGE_URL " for info)");
     curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
-    curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
     curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, bluster_curl_write_callback);
     curl_easy_setopt(hnd, CURLOPT_WRITEDATA, (void *) &rv);
     curl_easy_setopt(hnd, CURLOPT_FRESH_CONNECT, 1L);
