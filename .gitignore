@@ -60,3 +60,6 @@ Makefile.in
 bluster-*.tar.*
 
 /build/
+
+python object files
+*.py[co]
