@@ -27,7 +27,7 @@ def config():
     prompt('Github Gist TTL:', 'gist_ttl', validate='[0-9]*')
     prompt('Github oAuth token (with gist scope):', 'oauth_token',
            validate='[a-f0-9]*')
-    prompt('FastCGI threads to start, if any:', 'fastcgi_threads',
+    prompt('FastCGI threads to start (10 by default):', 'fastcgi_threads',
            validate='[0-9]*')
     upload_template('fabfile/templates/bluster.sh.j2', '%s/bluster.sh' % env.protected,
                     env, use_jinja=True, mode=0755)

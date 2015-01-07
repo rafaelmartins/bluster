@@ -24,7 +24,6 @@ import discount
 import fcgi
 import json_glib
 import peg
-import spawn_fcgi
 import utils
 
 
@@ -33,10 +32,14 @@ def install():
     utils.clean()
     peg.install()
     fcgi.install()
-    spawn_fcgi.install()
     json_glib.install()
     discount.install()
     balde.install()
     bluster.install()
     bluster.config()
+    utils.clean()
+
+
+@task
+def clean():
     utils.clean()
