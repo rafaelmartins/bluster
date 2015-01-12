@@ -36,6 +36,7 @@ bluster_before_request(balde_app_t *app, balde_request_t *request)
     G_LOCK(ctx);
     bluster_gist_ctx_t *ctx = balde_app_get_user_data(app);
     if (bluster_gist_ctx_needs_reload(ctx, ttl)) {
+        balde_log_info("bluster: reloading gist");
         bluster_gist_ctx_t *new_ctx = bluster_fetch_gist(gist_id, oauth_token);
         balde_app_set_user_data(app, new_ctx);
     }
