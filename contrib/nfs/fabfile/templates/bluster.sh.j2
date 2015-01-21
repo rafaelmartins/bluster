@@ -8,4 +8,4 @@ export BLUSTER_GIST_TTL={{ gist_ttl }}
 export BLUSTER_OAUTH_TOKEN="{{ oauth_token }}"
 {%- endif %}
 
-exec {{ prefix }}/bin/bluster -f -p 8080{% if fastcgi_threads %} -m {{ fastcgi_threads }}{% endif %}
+exec {{ prefix }}/bin/bluster --runfcgi --log-level INFO --fcgi-port 8080{% if fastcgi_threads %} --fcgi-max-threads {{ fastcgi_threads }}{% endif %}

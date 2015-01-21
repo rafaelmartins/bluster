@@ -10,6 +10,7 @@ def install():
     fetch_git('https://github.com/balde/balde.git', 'balde')
     autogen('balde')
     configure('balde', ['--prefix=%s' % env.prefix,
+                        'PKG_CONFIG_PATH=%s/lib/pkgconfig' % env.prefix,
                         'PATH=%s/bin:$PATH' % env.prefix,
                         'LDFLAGS="-Wl,--rpath -Wl,%s/lib -L%s/lib"' % (env.prefix,
                                                                        env.prefix),
