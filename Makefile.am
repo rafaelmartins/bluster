@@ -7,11 +7,8 @@ EXTRA_DIST = \
 	.version \
 	build-aux/git-version-gen \
 	README.md \
-	src/templates/header.html \
-	src/templates/footer.html \
-	src/templates/list-header.html \
-	src/templates/list-footer.html \
-	src/templates/list-item.html \
+	src/templates/base.html \
+	src/templates/list.html \
 	src/static/resources.xml \
 	src/static/screen.css \
 	tests/fixtures/gist.json \
@@ -88,16 +85,10 @@ bluster_SOURCES = \
 	src/main.c
 
 nodist_bluster_SOURCES = \
-	src/templates/header.c \
-	src/templates/header.h \
-	src/templates/footer.c \
-	src/templates/footer.h \
-	src/templates/list-header.c \
-	src/templates/list-header.h \
-	src/templates/list-footer.c \
-	src/templates/list-footer.h \
-	src/templates/list-item.c \
-	src/templates/list-item.h \
+	src/templates/base.c \
+	src/templates/base.h \
+	src/templates/list.c \
+	src/templates/list.h \
 	src/static/resources.c \
 	src/static/resources.h
 

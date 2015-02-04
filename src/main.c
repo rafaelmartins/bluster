@@ -17,11 +17,8 @@
 #include "helpers.h"
 #include "free.h"
 #include "static/resources.h"
-#include "templates/header.h"
-#include "templates/footer.h"
-#include "templates/list-header.h"
-#include "templates/list-footer.h"
-#include "templates/list-item.h"
+#include "templates/base.h"
+#include "templates/list.h"
 
 
 static balde_response_t*
@@ -80,26 +77,24 @@ main_view(balde_app_t *app, balde_request_t *request)
                 file->parsed_content->content);
         }
         balde_response_set_tmpl_var(response, "title", title);
-        balde_template_header(app, request, response);
-        balde_response_append_body(response, content);
+        balde_response_set_tmpl_var(response, "content", content);
+        balde_template_base(app, request, response);
         g_free(content);
-        balde_template_footer(app, request, response);
         return response;
     }
     if (slug == NULL) {
         balde_response_t* response = create_response(ctx);
-        balde_response_set_tmpl_var(response, "css", "");
         balde_response_set_tmpl_var(response, "title", ctx->headline);
-        balde_template_header(app, request, response);
-        balde_template_list_header(app, request, response);
+        GString *list = g_string_new("");
         for (GSList *tmp = ctx->files; tmp != NULL; tmp = tmp->next) {
             bluster_gist_file_t *tmp_file = tmp->data;
             balde_response_set_tmpl_var(response, "slug", tmp_file->slug);
             balde_response_set_tmpl_var(response, "link_title", tmp_file->title);
-            balde_template_list_item(app, request, response);
+            g_string_append(list, balde_str_template_list(app, request, response));
         }
-        balde_template_list_footer(app, request, response);
-        balde_template_footer(app, request, response);
+        balde_response_set_tmpl_var(response, "list", list->str);
+        g_string_free(list, TRUE);
+        balde_template_base(app, request, response);
         return response;
     }
     return balde_abort(app, 404);
