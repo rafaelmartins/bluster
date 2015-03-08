@@ -14,7 +14,6 @@ env.versions = {
     'fcgi': '2.4.1-SNAP-0910052249',
     'json-glib': '0.16.2',
     'peg': '0.1.15',
-    'spawn-fcgi': '1.6.4',
 }
 
 
@@ -36,8 +35,12 @@ def install():
     discount.install()
     balde.install()
     bluster.install()
-    bluster.config()
     utils.clean()
+
+
+@task
+def config():
+    bluster.config()
 
 
 @task

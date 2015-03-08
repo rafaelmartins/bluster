@@ -5,7 +5,7 @@ Simple fabfile to deploy bluster to NearlyFreeSpeech.NET servers.
 
 You just need to create ``[Production] Apache 2.4 Generic`` site, take note of the ssh username and run:
 
-    $ fab -u $your_ssh_user install
+    $ fab -u $your_ssh_user install config
 
 At the end of the deploy, fabric will ask for some configuration data, make sure to fill it correctly. Only the Gist ID is required.
 
