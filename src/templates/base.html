@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', FALSE, 'screen.css') }}" />
+        <title>{{ title }}</title>
+
+<!-- gist fetch datetime: {{ gist_datetime }} -->
+
+<!-- start styles -->
+
+{{ css }}
+<!-- end styles -->
+
+    </head>
+    <body>
+        <div id="content">
+            {%- if list %}
+            <h1>{{ title }}</h1>
+            <ul id="list">
+
+<!-- start list of pages -->
+
+{{ list }}
+<!-- end list of pages -->
+
+            </ul>
+            {% else %}
+
+<!-- start content -->
+
+{{ content }}
+
+<!-- end content -->
+
+            {% endif -%}
+        </div>
+        <footer>
+            <p>Proudly published with <a href="{{ bluster_url }}">bluster</a></p>
+        </footer>
+    </body>
+</html>
